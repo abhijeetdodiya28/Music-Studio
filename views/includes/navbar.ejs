@@ -1,0 +1,69 @@
+<nav class="navbar navbar-expand-md border-bottom sticky-top">
+    <div class="container-fluid">
+        <!-- Logo / Icon -->
+        <a href="/" class="navbar-brand">
+            <i class="fa-solid fa-microphone-lines"></i>
+        </a>
+
+        <!-- Centered Title (Independent from Navbar Toggle) -->
+        <div class="navbar-title-container">
+            <h1 class="navbar-title">MUSIC STUDIOS</h1>
+        </div>
+
+
+
+        <!-- Navbar Toggle Button (for mobile view) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link" href="/listings">Explore Studio</a>
+                <a class="nav-link" href="/listings/new">Add New Studio</a>
+
+                <% if (!currUser) { %>
+                    <a class="nav-link" href="/signup">Signup</a>
+                    <a class="nav-link" href="/login">Login</a>
+                    <% } %>
+
+                        <% if (currUser) { %>
+                            <a class="nav-link" href="/user-bookings/<%= currUser._id %>">My Bookings</a>
+                            <a class="nav-link" href="/logout">Logout</a>
+                            <% } %>
+
+                                <!-- Dark Mode Toggle Button -->
+                                <button id="themeToggle" class="theme-toggle ms-3">
+                                    <i class="fas fa-moon"></i>
+                                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const themeToggle = document.getElementById("themeToggle");
+        const body = document.body;
+        const icon = themeToggle.querySelector("i");
+
+        // Load saved theme preference
+        const savedTheme = localStorage.getItem("theme") || "light";
+        if (savedTheme === "dark") {
+            body.classList.add("dark-mode");
+            icon.className = "fas fa-sun";
+        } else {
+            body.classList.remove("dark-mode");
+            icon.className = "fas fa-moon";
+        }
+
+        // Toggle theme on button click
+        themeToggle.addEventListener("click", () => {
+            body.classList.toggle("dark-mode");
+            const isDarkMode = body.classList.contains("dark-mode");
+            localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+            icon.className = isDarkMode ? "fas fa-sun" : "fas fa-moon";
+        });
+    });
+</script>

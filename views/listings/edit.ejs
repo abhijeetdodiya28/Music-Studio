@@ -1,0 +1,151 @@
+<% layout("/layouts/boilerplate") %>
+
+    <div class="row">
+        <div class="col-8 offset-2">
+            <h1>Submit Data</h1>
+            <form method="post" action="/listings/<%= listing._id %>?_method=PUT" novalidate
+                class="needs-validation mb-3" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <!-- Name -->
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" class="form-control" id="name" value="<%= listing.name %>" name="listing[name]"
+                        required>
+                    <div class="invalid-feedback">
+                        Name should be valid
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <!-- Location -->
+                    <label for="location" class="form-label">Location:</label>
+                    <input type="text" class="form-control" id="location" value="<%= listing.location %>"
+                        name="listing[location]" required>
+                    <div class="invalid-feedback">
+                        Location should be valid
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <input type="hidden" name="deletedImages" id="deletedImages">
+
+                    <div class="mb-3">
+                        <label class="form-label"><b>Original Listing Images</b></label>
+                        <div class="image-preview-container">
+                            <% listing.images.forEach((image, index)=> { %>
+                                <div class="image-box">
+                                    <span class="image-number">
+                                        <%= index + 1 %>
+                                    </span>
+                                    <img src="<%= image.url %>" alt="Listing Image" class="preview-image">
+
+
+                                    <button type="button" class="btn btn-danger btn-sm delete-image-btn"
+                                        data-filename="<%= image.filename %>">
+                                        Delete
+                                    </button>
+                                </div>
+                                <% }) %>
+                        </div>
+
+
+                        <!-- Image Upload Field -->
+                        <label for="images" class="form-label"><b>Upload New Images:</b></label>
+                        <input type="file" id="images" class="form-control" name="images" multiple>
+                        <!-- Preview Selected Images Before Upload -->
+                        <div id="image-preview" class="image-preview-container"></div>
+                    </div>
+
+
+                    <!-- Facilities -->
+                    <label for="facilities" class="form-label">Facilities (comma-separated):</label>
+                    <input type="text" class="form-control" id="facilities" value="<%= listing.facilities %>"
+                        name="listing[facilities]" placeholder="e.g., WiFi, Pool, Gym" required>
+                    <div class="invalid-feedback">
+                        facilities should be valid
+                    </div>
+                </div>
+                <!-- category -->
+                <div class="mb-3">
+                    <p>Current Category: <%= listing.category %>
+                    </p>
+                    <label for="category" class="form-label">Category:</label>
+                    <select class="form-control" id="category" name="listing[category]" required>
+                        <option value="">Select a Category</option>
+                        <option value="String">String</option>
+                        <option value="Percussion">Percussion</option>
+                        <option value="Keyboard">Keyboard</option>
+                        <option value="Wind">Wind</option>
+                        <option value="Brass">Brass</option>
+                        <option value="Amazing Pools">Amazing Pools</option>
+                        <option value="Ethnomusicology">Ethnomusicology</option>
+                        <option value="General">General</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="mb-3 col-md-8">
+                        <!-- Availability -->
+                        <label for="availability" class="form-label">Availability: ▼</label>
+                        <select id="availability" name="listing[availability]" class="form-control"
+                            value="<%= listing.availability %>" required>
+                            <option value="true" class="form-control">Available </option>
+                            <option value="false" class="form-control">Not Available </option>
+                        </select>
+                        <div class="invalid-feedback">
+                            availability should be valid
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-md-4">
+                        <!-- Price -->
+                        <label for="price" class="form-label">Price (in ₹):</label>
+                        <input type="number" class="form-control" id="price" value="<%= listing.price %>"
+                            name="listing[price]" required>
+                        <div class="invalid-feedback">
+                            price should be valid
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <!-- Phone Number -->
+                    <label for="phoneNumber" class="form-label">Phone Number:</label>
+                    <input type="tel" class="form-control" id="phoneNumber" value="<%= listing.phoneNumber %>"
+                        name="listing[phoneNumber]" required>
+                    <div class="invalid-feedback">
+                        phoneNumber should be valid
+                    </div>
+                </div>
+
+
+
+                <!-- Submit Button -->
+                <button class="btn btn-dark add-btn " type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- JavaScript to handle image deletion -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const deletedImagesInput = document.getElementById("deletedImages");
+            const deleteButtons = document.querySelectorAll(".delete-image-btn");
+
+            deleteButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const filename = this.getAttribute("data-filename");
+
+                    // Update the hidden input with deleted image filenames
+                    let deletedImages = deletedImagesInput.value ? deletedImagesInput.value.split(",") : [];
+                    if (!deletedImages.includes(filename)) {
+                        deletedImages.push(filename);
+                    }
+                    deletedImagesInput.value = deletedImages.join(",");
+
+                    // Remove the image preview from UI
+                    this.parentElement.remove();
+                });
+            });
+        });
+    </script>

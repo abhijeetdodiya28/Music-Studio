@@ -1,0 +1,28 @@
+<% layout("layouts/boilerplate") %>
+
+    <body>
+        <div class="alert alert-danger col-6 offset-3 mt-5" role="alert">
+            <h4>Error</h4>
+            <p><strong>Status Code:</strong>
+                <%= err.statuscode || 500 %>
+            </p>
+
+            <p><strong>error message:</strong>
+                <%= err.message || "An error occurred" %>
+            </p>
+            <p><strong>error type:</strong>
+                <%= err.type || "An error occurred" %>
+            </p>
+
+
+            <% if (err.details && err.details.length> 0) { %>
+                <ul>
+                    <% err.details.forEach(detail=> { %>
+                        <li>
+                            <%= detail %>
+                        </li>
+                        <% }) %>
+                </ul>
+                <% } %>
+        </div>
+    </body>

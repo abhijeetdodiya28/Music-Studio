@@ -1,0 +1,147 @@
+<% layout('layouts/boilerplate') %>
+    <form action="/listings/search" method="GET" class="search-form">
+        <div class="input-group">
+            <input type="text" name="location" id="searchBar" class="form-control search-input"
+                placeholder="Search by location" required>
+            <button type="submit" id="searchButton" class="btn search-btn">🔍 Search</button>
+        </div>
+    </form>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchButton = document.getElementById("searchButton");
+
+            searchButton.addEventListener("click", function () {
+                const searchBar = document.getElementById("searchBar");
+                const filter = searchBar.value.toLowerCase();
+                const rows = document.querySelectorAll("#contactTable tbody tr");
+
+                rows.forEach(row => {
+                    const nameCell = row.querySelector("td:first-child");
+                    if (nameCell && nameCell.innerText.toLowerCase().indexOf(filter) > -1) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
+        });
+
+    </script>
+
+
+    <div class="container1">
+        <h2 class="heading">Categories</h2>
+        <div id="filters">
+            <div class="filter">
+                <a href="/listings?category=String Instruments">
+                    <div><i>&#127928;</i></div>
+                    <p>String</p>
+                </a>
+            </div>
+            <div class="filter">
+                <a href="/listings?category=Percussion">
+                    <div><i>&#129345;</i></div>
+                    <p>Percussion</p>
+                </a>
+            </div>
+            <div class="filter">
+                <a href="/listings?category=Keyboard">
+                    <div><i>&#x1F3B9;</i></div>
+                    <p>Keyboard</p>
+                </a>
+            </div>
+            <div class="filter">
+                <a href="/listings?category=Brass">
+                    <div><i>&#127930;</i></div>
+                    <p>Brass</p>
+                </a>
+            </div>
+            <div class="filter">
+                <a href="/listings?category=Ethnomusicology">
+                    <div><i>&#127926;&#119070;</i></div>
+                    <p>Ethnomu
+                        sicology</p>
+                </a>
+            </div>
+            <div class="filter">
+                <a href="/listings?category=Others">
+                    <div><i>&#127926;</i></div>
+                    <p>Others</p>
+                </a>
+            </div>
+            <div class="filter">
+                <a href="/listings">
+                    <div><i>&#128187;</i></div>
+                    <p>General</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Tax Toggle -->
+        <div class="tax-toggle" id="toggle">
+            <div class="form-check-reverse form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
+            </div>
+        </div>
+    </div>
+    <!-- Category Title -->
+    <% if (typeof location !=="undefined" && location) { %>
+        <% if (allListings.length> 0) { %>
+            <h3>Showing results for "<%= location %>"</h3>
+            <% } else { %>
+                <h3>No studios found for "<%= location %>"</h3>
+                <% } %>
+                    <% } %>
+
+                        <!-- Listings Container -->
+                        <div class="container">
+                            <div class="row">
+                                <% if (allListings.length> 0) { %>
+                                    <% for (let list of allListings) { %>
+                                        <div class="col-lg-4 col-md-6 col-sm-12 mb-5">
+                                            <div class="card listing-card fade-in mb-3">
+                                                <a href="/listings/<%= list._id %>" class="listing-link">
+                                                    <img src="<%= list.images[0]?.url || '/default.jpg' %>"
+                                                        class="card-img-top lazy-load"
+                                                        alt="<%= list.name || 'Studio Image' %>" style="height: 20rem;">
+                                                    <div class="card-body">
+                                                        <p class="card-text">
+                                                            <b>
+                                                                <%= list.name %>
+                                                            </b><br>
+                                                            &#8377; <%= list.price.toLocaleString("en-IN") %> / One
+                                                                Music
+                                                                <i class="tax-info">&nbsp; &nbsp; +18% GST</i>
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                            <% } else { %>
+                                                <div class="col-12 text-center">
+                                                    <h3 class="text-muted">No studios available in this category.</h3>
+                                                    <p>Try exploring other categories or check back later!</p>
+                                                </div>
+                                                <% } %>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Filter Scroll Fix -->
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const filtersContainer = document.getElementById("filters");
+                                filtersContainer.addEventListener("wheel", function (e) {
+                                    e.preventDefault();
+                                    filtersContainer.scrollLeft += e.deltaY;
+                                });
+                            });
+                        </script>
+
+                        <script src="/js/lazyload.js"></script>
+                        <script src="/js/script.js"></script>

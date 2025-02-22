@@ -1,0 +1,122 @@
+<% layout("/layouts/boilerplate") %>
+
+    <script>
+        async function cancelBooking(bookingId) {
+            const response = await fetch("/payment/cancel-booking", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ bookingId })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert(result.message);
+                location.reload();
+            } else {
+                alert(result.error || "Failed to cancel booking.");
+            }
+        }
+
+        function enableDateEdit(bookingId) {
+            document.getElementById(`dateText-${bookingId}`).style.display = "none";
+            document.getElementById(`dateInput-${bookingId}`).style.display = "inline-block";
+            document.getElementById(`saveBtn-${bookingId}`).style.display = "inline-block";
+            document.getElementById(`editBtn-${bookingId}`).style.display = "none";
+        }
+
+        async function saveBookingDate(bookingId) {
+            const newDate = document.getElementById(`dateInput-${bookingId}`).value;
+            if (!newDate) return;
+
+            const response = await fetch("/payment/edit-booking", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ bookingId, newDate })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                document.getElementById(`dateText-${bookingId}`).innerText = new Date(newDate).toDateString();
+                document.getElementById(`dateText-${bookingId}`).style.display = "inline";
+                document.getElementById(`dateInput-${bookingId}`).style.display = "none";
+                document.getElementById(`saveBtn-${bookingId}`).style.display = "none";
+                document.getElementById(`editBtn-${bookingId}`).style.display = "inline-block";
+            } else {
+                alert(result.error || "Failed to update booking.");
+            }
+        }
+        async function saveBookingDate(bookingId) {
+            const newDate = document.getElementById(`dateInput-${bookingId}`).value;
+            if (!newDate) return;
+
+            const response = await fetch("/payment/edit-booking", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ bookingId, newDate })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                document.getElementById(`dateText-${bookingId}`).innerText = new Date(newDate).toDateString();
+                document.getElementById(`dateText-${bookingId}`).style.display = "inline";
+                document.getElementById(`dateInput-${bookingId}`).style.display = "none";
+                document.getElementById(`saveBtn-${bookingId}`).style.display = "none";
+                document.getElementById(`editBtn-${bookingId}`).style.display = "inline-block";
+            } else {
+                alert(result.error || "Failed to update booking.");
+            }
+        }
+
+
+    </script>
+
+    <body>
+        <div class="container d-flex justify-content-center align-items-center vh-50 mb-4 ">
+
+            <div class="card-custom shadow-lg p-4 rounded-2 mb">
+                <h2 class="text-center fw-bold text-primary mb-4">🎵 My Booked Studios</h2>
+
+                <% if (bookings.length> 0) { %>
+                    <ul class="list-group overflow-auto">
+                        <% bookings.forEach(booking=> { %>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="fw-bold text-dark">
+                                        <%= booking.listingId.name %>
+                                    </h5>
+                                    <p class="text-muted mb-0">
+                                        📅 Date:
+                                        <span id="dateText-<%= booking._id %>">
+                                            <%= new Date(booking.bookingDate).toDateString() %>
+                                        </span>
+                                        <input type="date" id="dateInput-<%= booking._id %>"
+                                            class="form-control d-inline-block" style="width: 150px; display: none;">
+                                    </p>
+                                </div>
+                                <div>
+                                    <button id="editBtn-<%= booking._id %>" class="btn btn-warning btn-sm px-3"
+                                        onclick="enableDateEdit('<%= booking._id %>')">
+                                        ✏️ Edit
+                                    </button>
+                                    <button id="saveBtn-<%= booking._id %>" class="btn btn-success btn-sm px-3"
+                                        onclick="saveBookingDate('<%= booking._id %>')" style="display: none;">
+                                        💾 Save
+                                    </button> <br><br>
+                                    <button class="btn btn-danger btn-sm px-3"
+                                        onclick="cancelBooking('<%= booking._id %>')">
+                                        ❌ Cancel
+                                    </button>
+                                </div>
+                            </li>
+                            <% }) %>
+                    </ul>
+                    <% } else { %>
+                        <div class="alert alert-info text-center">
+                            <p>No bookings found.</p>
+                        </div>
+                        <% } %>
+            </div>
+        </div>
+    </body>
+
+    </html>

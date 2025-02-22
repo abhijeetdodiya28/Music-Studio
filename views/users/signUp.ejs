@@ -1,0 +1,52 @@
+<% layout("/layouts/boilerplate") %>
+    <div class="row mt-3">
+        <div class="col-6 offset-4 mb-3 login-box"> <!-- Matching Login Box Styling -->
+            <h1 class="loginh1"><b>Sign Up In WanderLust</b></h1>
+            <form action="/signup" method="post" class="needs-validation" novalidate>
+
+                <div class="mb-3"> <!-- Username -->
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                    <div class="invalid-feedback">
+                        Name should be valid
+                    </div>
+                </div>
+
+                <div class="mb-3"> <!-- Email -->
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                    <div class="invalid-feedback">
+                        Email should be valid
+                    </div>
+                </div>
+
+                <div class="mb-3"> <!-- Password -->
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                    <div class="invalid-feedback">
+                        Password should be valid
+                    </div>
+                </div>
+
+                <!-- Sign Up Button -->
+                <button class="btn btn-success btn-custom">
+                    <i class="fa-solid fa-user-plus"></i> Sign Up
+                </button>
+            </form>
+            <h2>Other Options</h2>
+            <!-- Social Sign-Up Buttons -->
+            <div class="social-login">
+                <a href="/auth/google" class="btn btn-danger btn-social">
+                    <i class="fa-brands fa-google"></i> Sign Up with Google
+                </a>
+
+                <a href="/auth/facebook" class="btn btn-primary btn-social">
+                    <i class="fa-brands fa-facebook-f"></i> Sign Up with Facebook
+                </a>
+
+                <a href="/auth/github" class="btn btn-dark btn-social">
+                    <i class="fa-brands fa-github"></i> Login with GitHub
+                </a>
+            </div>
+        </div>
+    </div>

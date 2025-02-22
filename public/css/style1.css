@@ -1,0 +1,350 @@
+ /* ✅ Fade-in Animation for Lazy Loaded Elements */
+ .fade-in {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ✅ Hover effect on listing image */
+.listing-card img {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.listing-card:hover img {
+    opacity: 0.5;
+}
+
+
+/* Responsive Title Size */
+@media (max-width: 768px) {
+    .navbar-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-title {
+        font-size: 1.2rem;
+    }
+}
+
+/* Center Title on Mobile */
+@media (max-width: 768px) {
+    .navbar-title-container {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 2rem;
+    }
+}
+
+/* Dark Mode Button */
+.theme-toggle {
+    background: none;
+    border: 2px solid #666;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #333;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+.theme-toggle:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* 🌙 Dark Mode Styles */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+/* Dark Mode Navbar */
+body.dark-mode .navbar {
+    background: #1e1e1e;
+    box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .navbar-title {
+    color: #ffffff;
+}
+
+body.dark-mode .navbar-collapse {
+    background: #1e1e1e;
+}
+
+body.dark-mode .navbar-toggler {
+    border-color: #ffffff;
+}
+
+body.dark-mode .navbar-nav .nav-link {
+    color: #ffffff;
+}
+
+body.dark-mode .navbar-nav .nav-link:hover {
+    color: #90caf9;
+}
+
+/* Dark Mode Theme Toggle Button */
+body.dark-mode .theme-toggle {
+    color: #ffffff;
+    border-color: #ffffff;
+}
+/* for reviews */
+/* Dark Mode for Review Form */
+body.dark-mode .needs-validation {
+    color: white;
+    border: 1px solid #333;
+    border-radius: 2rem;
+    padding: 1rem;
+}
+
+
+/* Dark Mode for Review Cards */
+body.dark-mode .card {
+    border: 1px solid #444;
+}
+
+body.dark-mode .card:hover {
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .card-text, .card-title {
+    color: #ffffff;
+}
+/* Dark Mode for Buttons */
+body.dark-mode .btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+body.dark-mode .btn-outline-danger {
+    border-color: #ff4444;
+    color: #ff4444;
+}
+
+body.dark-mode .btn-outline-danger:hover {
+    background: #ff4444 !important;
+    color: white !important;
+}
+
+/* Dark Mode for Map */
+body.dark-mode .map-container {
+    border: 1px solid #444;
+}
+
+
+
+/* --------------------------index.js--------------- */
+
+
+@media (max-width: 600px) {
+    #filters {
+        flex-wrap: nowrap; /* Ensure all items are in one row */
+        overflow-x: auto;
+        display: flex;
+        align-items: center; /* Center the items vertically */
+        justify-content: flex-start;
+        gap: 0.8rem;
+        padding-left: 0; /* Remove any padding */
+        margin-left: 0; /* Remove margin */
+    }
+    
+    /* Adjust individual filter styling */
+    .filter {
+        width: 5rem;
+        height: 5rem;
+        font-size: 0.9rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Ensure the first item is at the very left */
+    .filter:first-child {
+        margin-left: 0 !important;
+    }
+    
+    /* Optional: Style for icons */
+    .filter i {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .filter p {
+        font-size: 0.8rem;
+    }
+    
+    /* Adjust the tax-toggle styling */
+    .tax-toggle {
+        display: flex; /* Flexbox to keep it in the same line */
+        align-items: center;
+        justify-content: center;
+        height: 3rem;
+        padding: 0.7rem;
+        font-size: 0.8rem;
+        margin-left: 0.5rem;
+    }
+
+    /* Adjust the container */
+    
+    /* Adjust the listing cards */
+    .listing-card {
+        margin-bottom: 1rem;
+        margin-left: 1rem !important ;
+    }
+
+    .card-img-top {
+        height: 14rem !important;
+    }
+
+    .card-text {
+        font-size: 0.8rem;
+    }
+
+    /* Title adjustments */
+    h2 {
+        font-size: 1.2rem;
+        text-align: center;
+        margin-top: 1rem;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    /* Adjusting container padding */
+    .container {
+        padding: 0.5rem !important;
+    }
+
+    /* Adjust the text inside the listing card */
+    .card-text {
+        font-size: 0.8rem; /* Smaller font on mobile */
+        line-height: 1.2;
+    }
+
+    /* Mobile-specific Title */
+    h2 {
+        font-size: 1rem;
+    }
+
+    /* Adjust Image Height for mobile */
+    .card-img-top {
+        height: 10rem; /* Smaller height for better fit */
+    }
+
+    /* Stack cards on small screens */
+    .row-cols-lg-3, .row-cols-md-2, .row-cols-sm-1 {
+        grid-template-columns: 1fr; /* 1 column on small screens */
+    }
+
+    /* Ensure the tax toggle button is centered */
+    .tax-toggle {
+        width: 100%; /* Full width on mobile */
+        padding: 0.8rem;
+        text-align: center;
+    }
+
+    .tax-toggle .form-check-label {
+        font-size: 0.85rem;
+    }
+}
+
+/* show page ________________________________________ */
+
+
+@media screen and (max-width: 500px) {
+
+    /* Adjust Carousel */
+    .carousel {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: none;
+    }
+  
+    .carousel-item img {
+      height: 250px; /* Adjust image height for smaller screens */
+      border-radius: 8px;
+    }
+  
+    /* Adjust navigation buttons */
+    .carousel-control-prev,
+    .carousel-control-next {
+      height: 35px;
+      width: 35px;
+      font-size: 1.2rem;
+      padding: 6px;
+    }
+  
+    .carousel-control-prev {
+      left: 5px;
+    }
+  
+    .carousel-control-next {
+      right: 5px;
+    }
+  
+    /* Card Styling */
+    .card-body {
+      padding: 1.5rem;
+      margin-top: 0.5rem;
+    }
+  
+    .card-title {
+      font-size: 1rem;
+      padding: 0.5rem;
+    }
+  
+    .card-text {
+      font-size: 1.2rem !important;
+      padding: 0.5rem;
+    }
+  
+    /* Payment Section */
+    .payment-section {
+      padding: 1rem;
+    }
+  
+    .payment-btn {
+      font-size: 1rem;
+      padding: 8px 15px;
+    }
+  
+    /* Studio Actions */
+    .studio-actions {
+      padding: 1rem;
+    }
+  
+    .action-btn {
+      font-size: 0.9rem;
+      padding: 6px 12px;
+    }
+  
+    /* Reviews Section */
+    .starability-slot {
+      flex-wrap: wrap;
+    }
+  
+    .card.shadow-sm {
+      border-radius: 1rem;
+      padding: 0.5rem;
+      box-shadow: none;
+    }
+  
+    /* Map Section */
+    .map-container {
+      height: 250px;
+      border-radius: 8px;
+    }
+  }
+
+  
+  

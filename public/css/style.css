@@ -1,0 +1,875 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+html,body {
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+    font-weight: 400;
+    height: 100% ;
+    margin: 0 ;
+    font-style: normal;
+    display: flex ;
+    flex-direction: column ;
+    
+  }
+html {
+  scroll-behavior: smooth;
+}
+.row{
+  --bs-gutter-x: -0.5rem;
+  
+}
+
+.container {
+    flex: 1 ;
+}
+
+
+.navbar{
+    height: 0rem;
+    background-color: white;
+}
+
+/* icon */
+.fa-microphone-lines{
+    color: saddlebrown;
+    font-size: 3.3rem;
+}
+
+.nav-link{
+    color: #222222 !important;
+    font-size: 1.5rem !important;
+}
+
+/* footer */
+/* footer */
+
+
+.f-info{
+  text-align: center;
+  padding: 1rem 0;
+  margin: auto;
+  width: 100%;
+  height: 8rem;
+  background-color: #ebebeb;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: space-evenly;
+ 
+    margin-top: auto; /* Pushes it to the bottom */
+
+}
+.f-info-links a {
+    text-decoration: none;
+    color: #222222;
+    margin-right: 1.5rem;
+
+}
+
+.f-info-links a:hover{
+    text-decoration: underline;
+}
+
+.f-info-links,
+.f-info-socials,
+.f-info-brand{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.f-info-socials i{
+    margin-right: 2rem;
+    font-size: 2rem;
+}
+
+
+/* card */
+.listing-card{
+    border: none !important;
+    margin-bottom: 2rem;
+    max-width:100% !important;
+}
+.container{
+    max-width: 100% !important;
+}
+.card-img-top{
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+.card-body{
+    padding: 0 !important;
+}
+.listing-link{
+    text-decoration: none;
+}
+
+/* overlay- index.page----------------------------------------------------------------------------------------------  */
+
+.listing-card {
+  border: none !important;
+  margin-bottom: 2rem;
+  max-width: 100% !important;
+}
+
+.card-img-top {
+  border-radius: em !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+
+.card-body {
+  padding: 0 !important;
+}
+
+.listing-link {
+  text-decoration: none;
+}
+
+.card-text {
+  color: #222222;
+}
+
+/* Overlay */
+.listing-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-img-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.listing-card:hover .card-img-overlay {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.add-btn {
+  background-color: firebrick !important;
+}
+
+.add-btn:hover {
+  opacity: 0.5;
+  background-color: white;
+}
+
+/* Select Dropdown */
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid #4CAF50;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  appearance: none;
+  cursor: pointer;
+}
+
+select:hover {
+  border-color: #2e7d32;
+}
+
+select:focus {
+  border-color: #2e7d32;
+  box-shadow: 0 0 5px #4CAF50;
+}
+
+option {
+  background-color: #ffffff;
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+option[value="true"] {
+  color: #4CAF50;
+}
+
+option[value="false"] {
+  color: #f44336;
+}
+
+/* Image Preview */
+.image-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.image-box {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.preview-image:hover {
+  transform: scale(1.05);
+}
+/* Elegant & Classical Music Website Styles */
+/* Elegant & Classical Music Website Styles */
+
+/* Carousel Container */
+.carousel {
+  position: relative;
+  width: 100%;
+  margin: auto;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
+  background-color: #121212;
+}
+
+/* Carousel Wrapper */
+.carousel-inner {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+}
+
+/* Each Slide */
+.carousel-item {
+  min-width: 100%;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Image Styling */
+.carousel-item img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.carousel-item img:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* Navigation Buttons - Positioned Inside the Image */
+.carousel-control-prev,
+.carousel-control-next {
+  position: absolute;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  background-color: rgba(30, 30, 30, 0.6);
+  color: white;
+  border: none;
+  font-size: 1.8rem;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  opacity: 1; /* Always visible */
+}
+
+/* Adjust button positioning inside the image */
+.carousel-control-prev { 
+  left: 10px;  /* Move inside the image */
+}
+
+.carousel-control-next { 
+  right: 10px; /* Move inside the image */
+}
+
+/* Ensure buttons stay inside the image */
+.carousel-item {
+  position: relative;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  position: relative;
+}
+
+/* Hover Effect */
+.carousel-control-prev:hover, 
+.carousel-control-next:hover {
+  background-color: rgba(20, 20, 20, 0.9);
+}
+
+
+/* Card Styling */
+.card-body {
+  padding: 2.5rem;
+  background-color: #f9e4b7;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+
+}
+
+.card-title {
+  padding: 1rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #333;
+  font-family: "Times New Roman", serif;
+}
+
+.card-text {
+  padding: 1rem;
+  font-size: 1.5rem !important;
+  color: #444;
+  font-family: "Garamond", serif;
+}
+
+.card-text, p{
+  margin-bottom: 0rem ;
+}
+
+/* Payment Section */
+.payment-section {
+  text-align: center;
+  padding: 1.2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.payment-btn {
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background-color: #7a0000;
+  color: white;
+  font-family: "Times New Roman", serif;
+}
+
+/* Studio Actions */
+.studio-actions {
+  text-align: center;
+  padding: 1.2rem;
+}
+
+.action-btn {
+  font-size: 1rem;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background-color: #333;
+  color: white;
+  font-family: "Garamond", serif;
+}
+
+/* Reviews Section */
+.starability-slot {
+  display: flex;
+  justify-content: center;
+  border-radius: 1rem;
+}
+
+.card.shadow-sm {
+  border-radius: 2rem;
+  padding: 0.5rem;
+  margin-bottom: rem;
+  box-shadow: 0px 10px 12px rgba(0, 0, 0, 0.1);
+  background-color: #fdf6e3;
+}
+.card-title h5{
+  margin-bottom: 1rem !important;
+}
+
+/* Map Section */
+.map-container {
+  height: 350px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* update code --------------------------------------------------- */
+  .image-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.image-box {
+    position: relative;
+    width: 150px; /* Set fixed size */
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+
+.preview-image:hover {
+    transform: scale(1.05);
+}
+
+.image-number {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 3px 6px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+.card {
+  display: flex !important ;
+  flex-direction: column !important;
+  height: 100% !important ;
+  margin-right: 2rem !important;
+}
+
+.card-body {
+  flex-grow: 1 !important;
+}
+
+.card-text {
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  white-space: normal !important ;
+}
+
+
+/* indexpage=------------------------------------------------------------- */
+
+#filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center; /* Align vertically */
+  margin-top: 2rem;
+  margin-left: 5rem;
+  gap: 3.5rem;
+}
+
+/* Individual Filter Styling */
+.filter {
+  text-align: center;
+  background-color: #f7f1e1; /* Soft cream background */
+  padding: 1rem;
+  border-radius: 50%;
+  width: 6rem;
+  height: 6rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  opacity: 0.9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: 'Georgia', serif; /* Classical font */
+}
+
+.filter:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+  opacity: 1;
+  cursor: pointer;
+}
+
+/* Icon Styling */
+.filter i {
+  font-size: 1.5rem;
+  color: #8a5e3e; /* Elegant brownish color for icons */
+  margin-bottom: 0.8rem;
+}
+
+/* Text Inside Filter */
+.filter p {
+  font-size: 1rem;
+  font-weight: normal;
+  color: #5c3d28; /* Darker brown color for text */
+  margin: 0;
+}
+
+/* Remove Link Styling */
+.filter a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Hover effect for icons */
+.filter:hover i {
+  color: #c27c52; /* A more golden shade on hover */
+}
+
+/* 🎯 Positioning the Tax Toggle to align in one line */
+.tax-toggle {
+  width: fit-content;
+  max-width: 350px;
+  margin: 1rem 0; /* Adjust vertical margin */
+  margin-top: 2rem;
+  margin-left: 5rem;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  background: linear-gradient(135deg, #f7f1e1, #e4d7c5);
+  border-radius: 1.5rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #d1bfa8;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Hover Effect */
+.tax-toggle:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #f5e7d2, #d9c3a8);
+  transform: translateY(-3px);
+}
+
+
+
+
+
+/* navbar ------------------------------------ logo */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 5rem;
+  background-color: white;
+  padding: 0 2rem;
+}
+
+.navbar-collapse {
+  display: flex;
+  background-color: white;
+  justify-content: space-between;
+  border-radius: 1.5rem;
+  width: 20%;
+}
+
+.center-container {
+  flex-grow: 1; /* Allows the h1 to take center space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-title-container {
+    flex-grow: 1; /* Ensures it takes available space */
+    display: flex;
+    justify-content: center;
+}
+
+.navbar-title {
+    font-size: 1.8rem; /* Default size */
+    font-weight: bold;
+    color: #ff7b00;
+    text-transform: uppercase;
+}
+
+/* h2  */
+.heading {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  letter-spacing: 0.5px;
+  text-transform: capitalize;
+  font-family: 'Arial', sans-serif;
+}
+
+
+/* Smooth Transition */
+body, .navbar, .f-info, .card, .filter {
+  transition: background-color 0.4s, color 0.4s;
+}
+
+/* Dark Mode Styling */
+.dark-mode {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+/* Dark Mode */
+.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* Dark Mode Card */
+.dark-mode .card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-right: 2rem;
+  background-color: #1e1e1e; /* Dark background */
+  color: #ffffff; /* Light text */
+  border: 1px solid #333; /* Subtle border */
+}
+
+/* Card Body */
+.dark-mode .card-body {
+  flex-grow: 1;
+  color: #e0e0e0; /* Light grey text */
+}
+
+/* Card Text */
+.dark-mode .card-text {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  color: #f5f5f5;
+}
+
+/* Dark Mode for Buttons */
+.dark-mode .btn {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+.dark-mode .btn:hover {
+  background-color: #555;
+  color: #fff;
+}
+
+/* Dark Mode for Form Inputs */
+.dark-mode input, 
+.dark-mode textarea {
+  background-color: #2a2a2a;
+  color: #fff;
+  border: 1px solid #444;
+}
+
+.dark-mode input::placeholder, 
+.dark-mode textarea::placeholder {
+  color: #bbb;
+}
+
+
+.dark-mode .navbar {
+  background-color: #333;
+  border-bottom: 1px solid #444;
+}
+
+.dark-mode .nav-link {
+  color: #e0e0e0 !important;
+}
+
+.dark-mode .f-info {
+  background-color: #1a1a1a;
+}
+
+.dark-mode .f-info-links a {
+  color: #bdbdbd;
+}
+
+.dark-mode .fa-microphone-lines {
+  color: #ffcc00;
+}
+
+.dark-mode .card {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+.dark-mode .card-text {
+  color: #d0d0d0;
+}
+
+.dark-mode .carousel-container {
+  background-color: #1a1a1a;
+}
+
+.dark-mode button.prev, 
+.dark-mode button.next {
+  background-color: rgba(129, 70, 70, 0.2);
+}
+
+.dark-mode button.prev:hover 
+.dark-mode button.next:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.dark-mode h1 {
+  background: linear-gradient(90deg, #ffcc00, #ff6600);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dark-mode h2 {
+  color: #ffcc00;
+}
+
+.dark-mode .filter {
+  background-color: #333;
+  color: #f0f0f0;
+}
+.dark-mode .filter p{
+  color: #f0f0f0;
+}
+
+.dark-mode .filter:hover {
+  background-color: #c27c52;
+  color: #ffcc00;
+}
+
+.dark-mode select {
+  background-color: #333;
+  color: #fff;
+  border-color: #ffcc00;
+}
+
+.dark-mode option {
+  background-color: #222;
+  color: #f0f0f0;
+}
+/* Default light mode styling for .tax-toggle */
+
+
+/* Hover Effect for light mode */
+.tax-toggle:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #f5e7d2, #d9c3a8);
+  transform: translateY(-3px);
+}
+
+/* Dark Mode styling for .tax-toggle */
+.dark-mode .tax-toggle {
+  background: linear-gradient(135deg, #2c2c2c, #1f1f1f); /* Darker background */
+  color: #e0e0e0; /* Lighter text */
+  border: 1px solid #555555; /* Lighter border */
+}
+
+/* Dark Mode hover effect */
+.dark-mode .tax-toggle:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, #3b3b3b, #2a2a2a); /* Darker hover effect */
+  transform: translateY(-3px);
+}
+
+
+/* Default Light Mode Card Hover */
+.listing-card:hover {
+  transform: scale(1.03);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark Mode Card Hover */
+.dark-mode .listing-card:hover {
+  transform: scale(1.03);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Dark Mode Overlay Effect */
+.dark-mode .card-img-overlay {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.dark-mode .card-img-overlay:hover {
+  opacity: 0.5;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Mode Card Background Change on Hover */
+.dark-mode .card:hover {
+  background-color: #292929;
+}
+
+/* Ensure Smooth Animations */
+.card, .dark-mode .card {
+  transition: all 0.3s ease-in-out;
+}
+.fade-in {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* nav */
+
+ /* Smooth Transition */
+ body {
+  transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
+}
+
+/* Navbar Background for Light and Dark Mode */
+[data-bs-theme="light"] .navbar {
+  background-color: #f8f9fa !important;
+  color: #000;
+}
+
+[data-bs-theme="dark"] .navbar {
+  background-color: #212529 !important;
+  color: #fff;
+}
+
+/* Navbar Links Color */
+[data-bs-theme="light"] .nav-link {
+  color: #000;
+}
+
+[data-bs-theme="dark"] .nav-link {
+  color: #fff;
+}
+
+/* Button Styling */
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: inherit;
+  transition: color 0.3s ease-in-out;
+}
+

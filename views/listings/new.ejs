@@ -1,0 +1,92 @@
+<% layout("/layouts/boilerplate") %>
+
+    <div class="row">
+        <div class="col-8 offset-2">
+            <br><br>
+            <h1>Create New Studio </h1>
+
+            <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+                <!-- Name Field -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" class="form-control" id="name" name="listing[name]" required>
+                    <div class="invalid-feedback">Name should be valid</div>
+                </div>
+
+                <!-- Location Field -->
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location:</label>
+                    <input type="text" class="form-control" id="location" name="listing[location]" required>
+                    <div class="invalid-feedback">Location should be valid</div>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="mb-3">
+                    <label for="images" class="form-label">Upload Studio Images:</label>
+                    <input type="file" class="form-control" id="images" name="images" multiple required>
+                    <small id="image-error" class="text-danger" style="display: none;">You can only upload up to 5
+                        images.</small>
+                    <div class="invalid-feedback">Image should be valid</div>
+
+                </div>
+
+                <!-- Facilities Field -->
+                <div class="mb-3">
+                    <label for="facilities" class="form-label">Facilities (comma-separated):</label>
+                    <input type="text" class="form-control" id="facilities" name="listing[facilities]" required>
+                    <div class="invalid-feedback">Facilities should be valid</div>
+                </div>
+
+                <!-- Category Dropdown -->
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category:</label>
+                    <select class="form-control" id="category" name="listing[category]" required>
+                        <option value="">Select a Category</option>
+                        <option value="String">String</option>
+                        <option value="Percussion">Percussion</option>
+                        <option value="Keyboard">Keyboard</option>
+                        <option value="Wind">Wind</option>
+                        <option value="Brass">Brass</option>
+                        <option value="Amazing Pools">Amazing Pools</option>
+                        <option value="Ethnomusicology">Ethnomusicology</option>
+                        <option value="General">General</option>
+
+                    </select>
+                    <div class="invalid-feedback">Category should be valid</div>
+
+                </div>
+
+                <!-- Availability Field -->
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <label for="availability" class="form-label">Availability:</label><br>
+                        <select id="availability" name="listing[availability]" required>
+                            <option value="true" class="form-control">Available</option>
+                            <option value="false" class="form-control">Not Available</option>
+                        </select>
+                    </div>
+                    <div class="invalid-feedback">Availability should be valid</div>
+
+
+                    <!-- Price Field -->
+                    <div class="mb-3 col-md-8">
+                        <label for="price" class="form-label">Price (in ₹):</label>
+                        <input class="form-control" id="price" name="listing[price]" required>
+                        <div class="invalid-feedback">Price should be valid</div>
+
+                    </div>
+                </div>
+
+                <!-- Phone Number Field -->
+                <div class="mb-3">
+                    <label for="phoneNumber" class="form-label">Phone Number:</label>
+                    <input type="tel" class="form-control" id="phoneNumber" name="listing[phoneNumber]" required>
+                    <div class="invalid-feedback">Phone Number should be valid</div>
+
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-dark add-btn mb-3">Submit</button>
+            </form>
+        </div>
+    </div>

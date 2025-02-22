@@ -1,0 +1,44 @@
+<% layout("/layouts/boilerplate") %>
+
+    <!-- External CSS -->
+    <div class="container mb-4">
+        <div class="container d-flex justify-content-center align-items-center vh-50">
+            <div class="card shadow-sm card-custom1 p-4 mb-4" style="width: 500px; height: 40px; ">
+                <h2 class="text-center text-dark fw-bold">Booking Confirmation</h2>
+                <div class="alert alert-light text-center mt-3 mb-4">✅ Your booking for <strong class="text-primary">
+                        <%= listing.name %>
+                    </strong> is confirmed.</div>
+                <div class="text-center fs-5 fw-bold">💰 <strong>Price:</strong> ₹<span class="text-success">
+                        <%= listing.price %>
+                    </span></div>
+
+                <!-- Booking Date Selection -->
+                <div class="mt-4">
+                    <label for="bookingDate" class="fw-bold"><i class="fa fa-calendar-alt"></i> Select Booking
+                        Date:</label>
+                    <input type="date" id="bookingDate" class="form-control" required>
+                    <p id="error-message" class="text-danger text-center mt-2" style="display: none;"></p>
+                </div>
+
+                <!-- Payment Section -->
+                <div class="text-center mt-4">
+                    <h4 class="fw-bold text-primary">Make a Payment</h4>
+                    <button id="rzp-button1" class="btn btn-primary w-100 py-2" data-listing-id="<%= listing._id %>"
+                        data-user-id="<%= currUser?._id || '' %>" data-user-name="<%= currUser?.username || '' %>"
+                        data-user-email="<%= currUser?.email || '' %>">
+                        <i class="fas fa-credit-card"></i> Pay Now
+                    </button>
+                </div>
+
+                <!-- Back Button -->
+                <div class="text-center mt-3">
+                    <a href="/listings/<%= listing._id %>" class="btn btn-secondary w-100 py-2">
+                        <i class="fas fa-arrow-left"></i> Go Back to Studio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Razorpay and Custom JS -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="/js/payment.js"></script>
