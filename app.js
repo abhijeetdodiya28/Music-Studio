@@ -17,7 +17,7 @@ const User = require("./models/user.js");
 const LocalStrategy = require("passport-local");
 const cron = require("node-cron");
 const deleteExpiredBookings = require("./models/bookingcleanup.js");
-
+const cors = require("cors");
 const listingRoute = require("./routes/listings.js");
 const reviewRoute = require("./routes/review.js");
 const userRoute = require("./routes/user.js");
@@ -37,8 +37,9 @@ main()
         console.log("error connecting to mongodb");
     })
 async function main() {
-    await mongoose.connect(dburl);
+    mongoose.connect(dburl);
 }
+
 //midlewares
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -48,6 +49,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodoverride("_method"));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
+
+
+// Enable CORS before authentication and session middleware
+app.use(cors({ origin: ["https://music-studio-751p.onrender.com"], credentials: true }));
 
 // session storage 
 const store = MongoStore.create(

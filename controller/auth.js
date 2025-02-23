@@ -26,7 +26,7 @@ passport.use(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: "http://localhost:7000/auth/google/listings",
+            callbackURL: "http://music-studio-751p.onrender.com/auth/google/listings",
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
@@ -57,7 +57,7 @@ passport.use(
         {
             clientID: process.env.FACEBOOK_APP_ID,
             clientSecret: process.env.FACEBOOK_APP_SECRET,
-            callbackURL: "http://localhost:7000/auth/facebook/listings",
+            callbackURL: "http://music-studio-751p.onrender.com/auth/facebook/listings",
             profileFields: ["id", "displayName", "email"],
         },
         async (accessToken, refreshToken, profile, done) => {
@@ -88,7 +88,7 @@ passport.use(
         {
             clientID: process.env.GITHUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
-            callbackURL: "http://localhost:7000/auth/github/listings",
+            callbackURL: "http://music-studio-751p.onrender.com/auth/github/listings",
         },
         async (accessToken, refreshToken, profile, done) => {
             try {

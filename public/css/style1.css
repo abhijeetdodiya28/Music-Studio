@@ -190,7 +190,7 @@ body.dark-mode .map-container {
         height: 3rem;
         padding: 0.7rem;
         font-size: 0.8rem;
-        margin-left: 0.5rem;
+        margin-left: 1.5rem;
     }
 
     /* Adjust the container */
@@ -199,6 +199,7 @@ body.dark-mode .map-container {
     .listing-card {
         margin-bottom: 1rem;
         margin-left: 1rem !important ;
+        margin-right: 1rem !important;
     }
 
     .card-img-top {

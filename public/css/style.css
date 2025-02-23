@@ -425,7 +425,7 @@ option[value="false"] {
 .image-box {
     position: relative;
     width: 150px; /* Set fixed size */
-    height: 150px;
+    height: 190px;
     display: flex;
     align-items: center;
     justify-content: center;

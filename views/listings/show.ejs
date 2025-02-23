@@ -8,7 +8,7 @@
   <div class="show">
     <div class="container">
       <div class="col-8 offset-3">
-        <h3>
+        <h3 class="showtitle">
           <%= listing.name %>
         </h3>
       </div>
@@ -130,10 +130,10 @@
                       <div class="card shadow-sm">
                         <div class="card-body">
                           <h5 class="card-title fw-bold">
-                            <%= review.author ? review.author.username : "Unknown User" %>
+                            user : <%= review.author ? review.author.username : "Unknown User" %>
                           </h5>
-                          <p class="starability-result text-warning" data-rating="<%= review.rating %>"></p>
-                          <p class="card-text">
+                          Rating:<p class="starability-result text-warning" data-rating="<%= review.rating %>"></p>
+                          commet:<p class="card-text">
                             <%= review.comment %>
                           </p>
                         </div>
