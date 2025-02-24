@@ -20,7 +20,6 @@ const upload = multer({
     },
 });
 
-const LOCATIONIQ_API_KEY = "pk.153e40b0977b0a20cc31a0257e438c07"; // Use env variable
 
 const geocodingClient = {
     forwardGeocode: async ({ query, limit = 1 }) => {

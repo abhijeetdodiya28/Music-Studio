@@ -110,6 +110,9 @@ const razorpay = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
+app.get("/privacy-policy", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "privacy-policy.html"));
+});
 
 
 

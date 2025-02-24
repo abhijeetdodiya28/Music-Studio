@@ -127,6 +127,12 @@ passport.use(
 );
 
 
+// In your server code
+router.get("/privacy-policy", (req, res) => {
+    res.render("privacy-policy"); // This renders the EJS file
+});
+
+
 
 // Serialize and Deserialize User
 passport.serializeUser((user, done) => {
