@@ -288,7 +288,15 @@ module.exports.updateStudio = async (req, res) => {
 };
 
 
-
+module.exports.privacyp = async (req, res) => {
+    res.render("listings/privacy-policy.ejs")
+}
+module.exports.privacy = async (req, res) => {
+    res.render("listings/privacy");
+}
+module.exports.term = async (req, res) => {
+    res.render("listings/term");
+}
 
 
 

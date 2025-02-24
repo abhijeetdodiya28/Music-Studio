@@ -31,7 +31,7 @@ router.post("/create-order", async (req, res) => {
             return res.json({ error: "This studio is already booked for the selected date. Please choose another date." });
         }
 
-        const amount = listing.price * 100;
+        const amount = listing.price * 100; // Convert to paise
 
         const options = {
             amount: amount,

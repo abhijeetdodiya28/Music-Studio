@@ -25,7 +25,6 @@ const paymentRoutes = require("./routes/payment");
 const authRoute = require("./controller/auth.js"); // Add Google Auth Routes
 
 //database connectivity
-const dburl = process.env.ATLASTDB_URL
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/Musicstudio";
 
@@ -37,12 +36,17 @@ main()
         console.log("error connecting to mongodb");
     })
 async function main() {
-    mongoose.connect(dburl);
+    mongoose.connect(MONGO_URL);
 }
 
 //midlewares
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+app.get("/privacy-policy", (req, res) => {
+    res.render("privacy-policy.ejs");
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -52,26 +56,26 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 
 // Enable CORS before authentication and session middleware
-app.use(cors({ origin: ["https://music-studio-751p.onrender.com"], credentials: true }));
+// app.use(cors({ origin: ["https://music-studio-751p.onrender.com"], credentials: true }));
 
 // session storage 
-const store = MongoStore.create(
-    {
-        mongoUrl: dburl,
-        crypto: {
-            secret: "mysupersecretcode"
-        },
-        touchAfter: 24 * 3600,
-    }
-)
+// const store = MongoStore.create(
+//     {
+//         mongoUrl: dburl,
+//         crypto: {
+//             secret: "mysupersecretcode"
+//         },
+//         touchAfter: 24 * 3600,
+//     }
+// )
 
-store.on("error", () => {
-    console.log("Error in session store", err);
-})
+// store.on("error", () => {
+//     console.log("Error in session store", err);
+// })
 
-//session
+// //session
 const sessionOption = {
-    store,
+    // store,
     secret: "mysupersecretcode",
     resave: false,
     saveUninitialized: true,
@@ -110,9 +114,6 @@ const razorpay = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
-app.get("/privacy-policy", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "privacy-policy.html"));
-});
 
 
 
@@ -120,7 +121,7 @@ app.get("/privacy-policy", (req, res) => {
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
-    res.locals.currUser = req.user;
+    res.locals.currUser = req.user || null;
     next();
 });
 

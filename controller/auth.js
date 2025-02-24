@@ -6,6 +6,7 @@ const GitHubStrategy = require("passport-github2").Strategy;
 const User = require("../models/user"); // Adjust the path to your User model
 const express = require("express");
 const router = express.Router();
+require('dotenv').config();
 
 // Function to generate a unique username
 async function generateUniqueUsername(baseUsername) {
@@ -26,7 +27,7 @@ passport.use(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: process.env.GOOGLE_AUTHURL,
+            callbackURL: process.env.GOOGLE_CALLBACK_URL,
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
@@ -92,7 +93,6 @@ passport.use(
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
-                console.log(profile); // Debugging
 
                 let email = profile.emails && profile.emails.length > 0 ? profile.emails[0].value : `no-email-${profile.id}@example.com`;
 
@@ -127,10 +127,7 @@ passport.use(
 );
 
 
-// In your server code
-router.get("/privacy-policy", (req, res) => {
-    res.render("privacy-policy"); // This renders the EJS file
-});
+
 
 
 

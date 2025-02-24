@@ -88,9 +88,13 @@ router.get("/search", async (req, res) => {
 
 
 
+
 //  GET All Listings
 router.get("/", wrapAsync(listingController.index));
 
+
+router.get("/privacy-Policy", listingController.privacy);
+router.get("/term", listingController.term);
 
 // Create New Listing
 router.post(
