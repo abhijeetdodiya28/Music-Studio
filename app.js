@@ -154,6 +154,8 @@ app.use((err, req, res, next) => {
 app.get("/", (req, res) => {
     res.send("listings")
 })
-app.listen(7000, () => {
-    console.log("server is running on port 7000");
-}) 
+const PORT = process.env.PORT || 7000; // Read PORT from .env or use 7000 as default
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
