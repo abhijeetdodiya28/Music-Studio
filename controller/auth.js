@@ -58,7 +58,7 @@ passport.use(
         {
             clientID: process.env.FACEBOOK_APP_ID,
             clientSecret: process.env.FACEBOOK_APP_SECRET,
-            callbackURL: "https://music-studio-yuyo.onrender.com/auth/facebook/callback",
+            callbackURL: "https://music-studio-yuyo.omender.com/auth/callback",
 
             profileFields: ["id", "displayName", "email"],
         },
