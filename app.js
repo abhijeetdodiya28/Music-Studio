@@ -26,6 +26,7 @@ const authRoute = require("./controller/auth.js"); // Add Google Auth Routes
 
 //database connectivity
 
+const dirlink = process.env.ATLASTDB_URL;
 const MONGO_URL = "mongodb://127.0.0.1:27017/Musicstudio";
 
 
@@ -36,7 +37,7 @@ main()
         console.log("error connecting to mongodb");
     })
 async function main() {
-    mongoose.connect(MONGO_URL);
+    mongoose.connect(dirlink);
 }
 
 //midlewares
