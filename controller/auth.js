@@ -58,7 +58,7 @@ passport.use(
         {
             clientID: process.env.FACEBOOK_APP_ID,
             clientSecret: process.env.FACEBOOK_APP_SECRET,
-            callbackURL: "https://music-studio-yuyo.omender.com/auth/callback",
+            callbackURL: "https://music-studio-yuyo.omender.com/auth/listings",
 
             profileFields: ["id", "displayName", "email"],
         },
@@ -164,7 +164,7 @@ router.get("/auth/google/listings", (req, res, next) => {
 // Facebook Auth Routes
 router.get("/auth/facebook", passport.authenticate("facebook", { scope: ["email"] }));
 
-router.get("/auth/facebook/callback", (req, res, next) => {
+router.get("/auth/facebook/listings", (req, res, next) => {
     passport.authenticate("facebook", { failureRedirect: "/login" }, (err, user, info) => {
         if (err) return next(err);
         if (!user) return res.redirect("/login");
