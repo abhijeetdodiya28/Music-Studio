@@ -14,24 +14,34 @@ const razorpay = new Razorpay({
 });
 
 router.post("/create-order", async (req, res) => {
+    console.log("🟢 Received request at /create-order:", req.body); // ✅ Logs requests for debugging
+
     try {
         const { listingId, userId, bookingDate } = req.body;
+        console.log("ℹ️ Listing ID:", listingId, "User ID:", userId, "Booking Date:", bookingDate);
 
         if (!listingId || !userId || !bookingDate) {
-            return res.json({ error: "Missing required details." });
+            console.log("❌ Missing required details.");
+            return res.json({ error: "Missing required details." }); // ✅ Checks for missing fields
         }
 
         const listing = await Listing.findById(listingId);
         if (!listing) {
-            return res.json({ error: "Listing not found." });
+            console.log("❌ Listing not found.");
+            return res.json({ error: "Listing not found." }); // ✅ Fetches the listing from DB
         }
 
+        console.log("✅ Listing found:", listing);
+
+        // Check if the studio is already booked for the selected date
         const existingPayment = await Payment.findOne({ listingId, bookingDate });
         if (existingPayment) {
-            return res.json({ error: "This studio is already booked for the selected date. Please choose another date." });
+            console.log("❌ This studio is already booked for the selected date.");
+            return res.json({ error: "This studio is already booked for the selected date. Please choose another date." }); // ✅ Prevents double booking
         }
 
         const amount = listing.price * 100; // Convert to paise
+        console.log("💰 Amount to be paid:", amount); // ✅ Calculates amount
 
         const options = {
             amount: amount,
@@ -41,9 +51,11 @@ router.post("/create-order", async (req, res) => {
         };
 
         const order = await razorpay.orders.create(options);
+        console.log("✅ Razorpay order created:", order); // ✅ Creates a Razorpay order
+
         return res.json(order);
     } catch (error) {
-        console.error("Order Creation Error:", error);
+        console.error("❌ Order Creation Error:", error);
         return res.json({ error: "Something went wrong. Please try again." });
     }
 });
