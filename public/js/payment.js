@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
                 alert("Redirecting to payment gateway... Please do not refresh the page.");
 
-                const response = await fetch("https://music-studio-yuyo.onrender.com/payment/create-order", { // send post request to the backend...
+                const response = await fetch("http://localhost:7000/payment/create-order", { // send post request to the backend...
                     method: "POST",//for request 
                     headers: { "Content-Type": "application/json" },//convert in object 
                     body: JSON.stringify({ listingId, userId, bookingDate })//send data to the body 
