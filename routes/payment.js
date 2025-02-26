@@ -1,3 +1,4 @@
+
 const express = require("express");
 const router = express.Router();
 const Razorpay = require("razorpay");
@@ -11,13 +12,12 @@ const razorpay = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
-// ✅ **Create Order - Ensure Correct Amount is Sent**
+// ✅ **Create Order with Correct Amount**
 router.post("/create-order", async (req, res) => {
-    console.log("Received request at /create-order:", req.body);
+    console.log("📩 Received request at /create-order:", req.body);
 
     try {
         const { listingId, userId, bookingDate } = req.body;
-        console.log("Listing ID:", listingId, "User ID:", userId, "Booking Date:", bookingDate);
 
         if (!listingId || !userId || !bookingDate) {
             console.log("❌ Missing required details.");
@@ -30,7 +30,7 @@ router.post("/create-order", async (req, res) => {
             return res.status(404).json({ error: "Listing not found." });
         }
 
-        // ✅ Convert amount to paise (Razorpay uses paise)
+        // ✅ Convert amount to paise (Razorpay expects paise)
         const amount = listing.price * 100;
         console.log("💰 Amount to be paid (in paise):", amount);
 
@@ -39,7 +39,7 @@ router.post("/create-order", async (req, res) => {
             amount,
             currency: "INR",
             receipt: `receipt_${Date.now()}`,
-            payment_capture: 1 // Auto capture
+            payment_capture: 1, // Auto capture payment
         };
 
         const order = await razorpay.orders.create(options);
@@ -56,12 +56,12 @@ router.post("/create-order", async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Order Creation Error:", error);
-        return res.status(500).json({ error: `Something went wrong: ${error.message}` });
+        console.error("❌ Order Creation Error:", error);
+        return res.status(500).json({ error: `Something went wrong: ${error?.message || "Unknown error"}` });
     }
 });
 
-// ✅ **Verify Payment - Ensure Data Consistency**
+// ✅ **Verify Payment with Debugging**
 router.post("/verify-payment", async (req, res) => {
     try {
         const {
@@ -74,7 +74,7 @@ router.post("/verify-payment", async (req, res) => {
             amount
         } = req.body;
 
-        console.log("🔍 Verifying payment...");
+        console.log("🔍 Verifying payment...", req.body);
 
         // ✅ Check if the date is already booked
         const existingBooking = await Payment.findOne({
@@ -123,15 +123,8 @@ router.post("/verify-payment", async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Payment Verification Error:", error);
-
-        if (error.code === 11000) {
-            return res.status(400).json({
-                error: "This date is already booked. Please select a different date."
-            });
-        }
-
-        return res.status(500).json({ error: "Payment verification failed. Please try again." });
+        console.error("❌ Payment Verification Error:", error);
+        return res.status(500).json({ error: `Payment verification failed: ${error?.message || "Unknown error"}` });
     }
 });
 
