@@ -136,7 +136,7 @@ module.exports.showStudio = async (req, res) => {
         return res.redirect("/listings");
     }
 
-    res.render("listings/show", { listing, mapToken: process.env.MAP_TOKEN });
+    res.render("listings/show", { listing, mapToken: process.env.MAP_TOKEN, user: req.user });
 };
 
 
