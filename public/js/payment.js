@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 return;
                             }
 
-                            const verifyResponse = await fetch("/payment/verify-payment", {
+                            const verifyResponse = await fetch("https://music-studio-yuyo.onrender.com/payment/verify-payment", {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({
