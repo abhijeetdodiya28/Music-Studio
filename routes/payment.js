@@ -11,6 +11,9 @@ const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET
 });
+console.log("🔑 Razorpay Key ID:", process.env.RAZORPAY_KEY_ID);
+console.log("🔑 Razorpay Key Secret:", process.env.RAZORPAY_KEY_SECRET);
+
 
 // ✅ **Create Order with Correct Amount**
 router.post("/create-order", async (req, res) => {
@@ -33,20 +36,17 @@ router.post("/create-order", async (req, res) => {
             return res.status(404).json({ error: "Listing not found." });
         }
 
-        // Convert amount to paise (Razorpay requires paise)
+        console.log("💰 Listing price:", listing.price);
         const amount = listing.price * 100;
-        console.log("💰 Amount to be paid (in paise):", amount);
 
-        // Create order in Razorpay
-        const options = {
+        console.log("🚀 Creating order with Razorpay...");
+        const order = await razorpay.orders.create({
             amount,
             currency: "INR",
             receipt: `receipt_${Date.now()}`,
             payment_capture: 1,
-        };
+        });
 
-        console.log("🚀 Creating order with Razorpay...");
-        const order = await razorpay.orders.create(options);
         console.log("🛒 Order created successfully:", order);
 
         res.json({
@@ -61,9 +61,10 @@ router.post("/create-order", async (req, res) => {
 
     } catch (error) {
         console.error("❌ Order Creation Error:", error);
-        return res.status(500).json({ error: `Something went wrong: ${error?.message || "Unknown error"}` });
+        return res.status(500).json({ error: `Something went wrong: ${error.message}` });
     }
 });
+
 
 
 // ✅ **Verify Payment with Debugging**
