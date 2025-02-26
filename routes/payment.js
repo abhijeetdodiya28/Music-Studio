@@ -1,66 +1,47 @@
 const express = require("express");
-const crypto = require("crypto");
 const router = express.Router();
-const Listing = require("../models/listings"); // Your Listing Model
-const Payment = require("../models/payment"); // Your Payment Model
 const Razorpay = require("razorpay");
+const crypto = require("crypto");
+const Payment = require("../models/payment");
+const Listing = require("../models/listings");
+// const deleteExpiredBookings = require("../models/bookingcleanup"); // Import the cleanup function
+
+require("dotenv").config();
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
-// 🛒 **Create Order**
 router.post("/create-order", async (req, res) => {
-    try {
-        console.log("🟢 Received request at /create-order:", req.body);
+    console.log("Received request at /create-order:", req.body); // Log request data
 
+    try {
         const { listingId, userId, bookingDate } = req.body;
+        console.log("Listing ID:", listingId, "User ID:", userId, "Booking Date:", bookingDate);
+
         if (!listingId || !userId || !bookingDate) {
             console.log("❌ Missing required details.");
-            return res.status(400).json({ error: "Missing required details." });
+            return res.json({ error: "Missing required details." });
         }
 
         const listing = await Listing.findById(listingId);
         if (!listing) {
             console.log("❌ Listing not found.");
-            return res.status(404).json({ error: "Listing not found." });
+            return res.json({ error: "Listing not found." });
         }
 
         console.log("✅ Listing found:", listing);
-
-        const existingPayment = await Payment.findOne({ listingId, bookingDate });
-        if (existingPayment) {
-            console.log("❌ Studio already booked for this date.");
-            return res.status(400).json({ error: "This studio is already booked for the selected date." });
-        }
-
-        const amount = listing.price * 100; // Convert to paise
-        console.log("💰 Amount to be paid (in paise):", amount);
-
-        const options = {
-            amount: amount,
-            currency: "INR",
-            receipt: `order_rcptid_${Date.now()}`,
-            payment_capture: 1
-        };
-
-        console.log("🛠️ Creating Razorpay order...");
-        const order = await razorpay.orders.create(options);
-
-        console.log("✅ Razorpay order created:", order);
-        return res.json(order);
+        res.json({ message: "Success!" });
     } catch (error) {
-        console.error("❌ Order Creation Error:", error);
-        return res.status(500).json({ error: "Something went wrong. Please try again." });
+        console.error("Order Creation Error:", error);
+        return res.json({ error: `Something went wrong: ${error.message}` });
     }
 });
 
-// ✅ **Verify Payment Signature & Save Payment**
+
 router.post("/verify-payment", async (req, res) => {
     try {
-        console.log("🟢 Received payment verification request:", req.body);
-
         const {
             razorpay_order_id,
             razorpay_payment_id,
@@ -71,7 +52,7 @@ router.post("/verify-payment", async (req, res) => {
             amount
         } = req.body;
 
-        // Check if the listing is already booked
+        // Check if date is already booked
         const existingBooking = await Payment.findOne({
             listingId,
             bookingDate: new Date(bookingDate),
@@ -79,27 +60,23 @@ router.post("/verify-payment", async (req, res) => {
         });
 
         if (existingBooking) {
-            console.log("❌ Booking conflict: This date is already booked.");
-            return res.status(400).json({ error: "This date is already booked for this studio." });
+            return res.status(400).json({
+                error: "This date is already booked for this studio"
+            });
         }
 
-        // Generate expected signature
+        // Verify payment signature
         const generated_signature = crypto
             .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-            .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+            .update(razorpay_order_id + "|" + razorpay_payment_id)
             .digest("hex");
 
-        console.log("🔍 Expected Signature:", generated_signature);
-        console.log("🔍 Received Signature:", razorpay_signature);
-
         if (generated_signature !== razorpay_signature) {
-            console.log("❌ Signature mismatch!");
-            return res.status(400).json({ error: "Invalid payment signature" });
+            return res.status(400).json({
+                error: "Invalid payment signature"
+            });
         }
 
-        console.log("✅ Signature matched! Saving payment details...");
-
-        // Save payment details
         const newPayment = new Payment({
             listingId,
             userId,
@@ -112,22 +89,29 @@ router.post("/verify-payment", async (req, res) => {
 
         await newPayment.save();
 
-        console.log("✅ Payment recorded successfully!");
-
         return res.status(200).json({
             success: true,
             message: "Payment successful! Your studio is booked.",
-            payment: { id: newPayment._id, bookingDate: newPayment.bookingDate }
+            payment: {
+                id: newPayment._id,
+                bookingDate: newPayment.bookingDate
+            }
         });
 
     } catch (error) {
-        console.error("❌ Payment Verification Error:", error);
-        return res.status(500).json({ error: "Payment verification failed. Please try again." });
+        console.error("Payment Verification Error:", error);
+
+        if (error.code === 11000) {
+            return res.status(400).json({
+                error: "This date is already booked. Please select a different date."
+            });
+        }
+        console.log(error)
+        return res.status(500).json({
+            error: "Payment verification failed. Please try again."
+        });
     }
 });
-
-module.exports = router;
-
 
 router.get("/user-bookings/:userId", async (req, res) => {
     try {
