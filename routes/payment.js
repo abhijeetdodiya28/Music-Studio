@@ -14,39 +14,31 @@ const razorpay = new Razorpay({
 });
 
 router.post("/create-order", async (req, res) => {
+    console.log("Received request at /create-order:", req.body); // Log request data
+
     try {
         const { listingId, userId, bookingDate } = req.body;
+        console.log("Listing ID:", listingId, "User ID:", userId, "Booking Date:", bookingDate);
 
         if (!listingId || !userId || !bookingDate) {
+            console.log("❌ Missing required details.");
             return res.json({ error: "Missing required details." });
         }
 
         const listing = await Listing.findById(listingId);
         if (!listing) {
+            console.log("❌ Listing not found.");
             return res.json({ error: "Listing not found." });
         }
 
-        const existingPayment = await Payment.findOne({ listingId, bookingDate });
-        if (existingPayment) {
-            return res.json({ error: "This studio is already booked for the selected date. Please choose another date." });
-        }
-
-        const amount = listing.price * 100; // Convert to paise
-
-        const options = {
-            amount: amount,
-            currency: "INR",
-            receipt: `order_rcptid_${Date.now()}`,
-            payment_capture: 1
-        };
-
-        const order = await razorpay.orders.create(options);
-        return res.json(order);
+        console.log("✅ Listing found:", listing);
+        res.json({ message: "Success!" });
     } catch (error) {
         console.error("Order Creation Error:", error);
-        return res.json({ error: "Something went wrong. Please try again." });
+        return res.json({ error: `Something went wrong: ${error.message}` });
     }
 });
+
 
 router.post("/verify-payment", async (req, res) => {
     try {
