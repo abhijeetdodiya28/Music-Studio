@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
                 alert("Redirecting to payment gateway... Please do not refresh the page.");
 
-                const response = await fetch("https://music-studio-yuyo.onrender.com/listings/create-order", { // send post request to the backend...
+                const response = await fetch("https://music-studio-yuyo.onrender.com/payment/create-order", { // send post request to the backend...
                     method: "POST",//for request 
                     headers: { "Content-Type": "application/json" },//convert in object 
                     body: JSON.stringify({ listingId, userId, bookingDate })//send data to the body 
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 return;
                             }
 
-                            const verifyResponse = await fetch("/listings/verify-payment", {
+                            const verifyResponse = await fetch("/payment/verify-payment", {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({

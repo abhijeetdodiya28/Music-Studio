@@ -12,35 +12,38 @@ const razorpay = new Razorpay({
 });
 
 router.post("/create-order", async (req, res) => {
-    console.log("📩 Received request at /create-order:", req.body);
+    console.log(" Received request at /create-order:", req.body);
 
     try {
         const { listingId, userId, bookingDate } = req.body;
 
         if (!listingId || !userId || !bookingDate) {
-            console.log("❌ Missing required details.");
+            console.log(" Missing required details.");
             return res.status(400).json({ error: "Missing required details." });
         }
 
-        console.log("🔍 Fetching listing details...");
+        console.log("Fetching listing details...");
         const listing = await Listing.findById(listingId);
+        console.log("Listing fetched:", listing);
 
         if (!listing) {
-            console.log("❌ Listing not found.");
+            console.log("Listing not found.");
             return res.status(404).json({ error: "Listing not found." });
         }
 
-        const amount = listing.price * 100; // Convert to paise
-        console.log("💰 Amount:", amount);
+        const amount = listing.price * 100; // Convert amount to paise
+        console.log(" Amount to be paid (in paise):", amount);
 
-        const order = await razorpay.orders.create({
+        const options = {
             amount,
             currency: "INR",
             receipt: `receipt_${Date.now()}`,
             payment_capture: 1,
-        });
+        };
 
-        console.log("🛒 Order Created:", order);
+        console.log(" Creating order with Razorpay...");
+        const order = await razorpay.orders.create(options);
+        console.log(" Order created successfully:", order);
 
         res.json({
             success: true,
@@ -53,11 +56,10 @@ router.post("/create-order", async (req, res) => {
         });
 
     } catch (error) {
-        console.error("❌ Order Creation Error:", error);
-        return res.status(500).json({ error: `Something went wrong: ${error.message}` });
+        console.error(" Order Creation Error:", error);
+        return res.status(500).json({ error: `Something went wrong: ${error.message || "Unknown error"}` });
     }
 });
-
 
 router.post("/verify-payment", async (req, res) => {
     try {
@@ -71,7 +73,7 @@ router.post("/verify-payment", async (req, res) => {
             amount
         } = req.body;
 
-        console.log("🔍 Verifying payment...", req.body);
+        console.log("Verifying payment...", req.body);
 
         const existingBooking = await Payment.findOne({
             listingId,
@@ -80,7 +82,7 @@ router.post("/verify-payment", async (req, res) => {
         });
 
         if (existingBooking) {
-            console.log("❌ This date is already booked.");
+            console.log(" This date is already booked.");
             return res.status(400).json({ error: "This date is already booked for this studio." });
         }
 
@@ -90,7 +92,7 @@ router.post("/verify-payment", async (req, res) => {
             .digest("hex");
 
         if (generated_signature !== razorpay_signature) {
-            console.log("❌ Invalid payment signature.");
+            console.log(" Invalid payment signature.");
             return res.status(400).json({ error: "Invalid payment signature" });
         }
 
@@ -105,7 +107,7 @@ router.post("/verify-payment", async (req, res) => {
         });
 
         await newPayment.save();
-        console.log("✅ Payment verified and saved.");
+        console.log("Payment verified and saved.");
 
         return res.status(200).json({
             success: true,
@@ -117,7 +119,7 @@ router.post("/verify-payment", async (req, res) => {
         });
 
     } catch (error) {
-        console.error("❌ Payment Verification Error:", error);
+        console.error(" Payment Verification Error:", error);
         return res.status(500).json({ error: `Payment verification failed: ${error?.message || "Unknown error"}` });
     }
 });
