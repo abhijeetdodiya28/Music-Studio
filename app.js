@@ -91,6 +91,8 @@ const sessionOption = {
 
 
 //middleware for listing
+app.use(cors());
+
 app.use(session(sessionOption));
 app.use(flash());
 
