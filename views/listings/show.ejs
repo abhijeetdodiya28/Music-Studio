@@ -67,11 +67,16 @@
                   <a href="/login" class="btn btn-primary mb-2 ml-10">Login to Book</a>
                   <% } %>
 
+                    <% if (typeof user !=="undefined" && user) { %>
+                      <button id="rzp-button1" data-listing-id="<%= listing._id %>" data-user-id="<%= user._id %>"
+                        data-user-name="<%= user.name %>" data-user-email="<%= user.email %>"
+                        class="btn btn-primary mb-2 ml-10">
+                        Book Now
+                      </button>
+                      <% } else { %>
+                        <a href="/login" class="btn btn-primary mb-2 ml-10">Login to Book</a>
+                        <% } %>
 
-                    <button id="rzp-button1" data-listing-id="<%= listing._id %>" data-user-id="<%= user._id %>"
-                      data-user-name="<%= user.name %>" data-user-email="<%= user.email %>"
-                      class="btn btn-primary mb-2 ml-10">
-                      Book Now </button>
 
           </div>
 
