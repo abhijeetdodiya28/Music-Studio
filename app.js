@@ -21,7 +21,7 @@ const cors = require("cors");
 const listingRoute = require("./routes/listings.js");
 const reviewRoute = require("./routes/review.js");
 const userRoute = require("./routes/user.js");
-const paymentRoutes = require("./routes/payment");
+const paymentRoutes = require("./routes/payment.js");
 const authRoute = require("./controller/auth.js"); // Add Google Auth Routes
 
 //database connectivity
