@@ -1,21 +1,16 @@
 
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const Razorpay = require("razorpay");
-const crypto = require("crypto");
-const Payment = require("../models/payment");
-const Listing = require("../models/listings");
-require("dotenv").config();
+const crypto = require('crypto');
+const Razorpay = require('razorpay');
+const Listing = require('../models/listings');
+const Payment = require('../models/payment');
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET
 });
-console.log("🔑 Razorpay Key ID:", process.env.RAZORPAY_KEY_ID);
-console.log("🔑 Razorpay Key Secret:", process.env.RAZORPAY_KEY_SECRET);
 
-
-// ✅ **Create Order with Correct Amount**
 router.post("/create-order", async (req, res) => {
     console.log("📩 Received request at /create-order:", req.body);
 
@@ -36,17 +31,18 @@ router.post("/create-order", async (req, res) => {
             return res.status(404).json({ error: "Listing not found." });
         }
 
-        console.log("💰 Listing price:", listing.price);
-        const amount = listing.price * 100;
+        const amount = listing.price * 100; // Convert amount to paise
+        console.log("💰 Amount to be paid (in paise):", amount);
 
-        console.log("🚀 Creating order with Razorpay...");
-        const order = await razorpay.orders.create({
+        const options = {
             amount,
             currency: "INR",
             receipt: `receipt_${Date.now()}`,
             payment_capture: 1,
-        });
+        };
 
+        console.log("🚀 Creating order with Razorpay...");
+        const order = await razorpay.orders.create(options);
         console.log("🛒 Order created successfully:", order);
 
         res.json({
@@ -61,13 +57,10 @@ router.post("/create-order", async (req, res) => {
 
     } catch (error) {
         console.error("❌ Order Creation Error:", error);
-        return res.status(500).json({ error: `Something went wrong: ${error.message}` });
+        return res.status(500).json({ error: `Something went wrong: ${error.message || "Unknown error"}` });
     }
 });
 
-
-
-// ✅ **Verify Payment with Debugging**
 router.post("/verify-payment", async (req, res) => {
     try {
         const {
@@ -82,7 +75,6 @@ router.post("/verify-payment", async (req, res) => {
 
         console.log("🔍 Verifying payment...", req.body);
 
-        // ✅ Check if the date is already booked
         const existingBooking = await Payment.findOne({
             listingId,
             bookingDate: new Date(bookingDate),
@@ -94,7 +86,6 @@ router.post("/verify-payment", async (req, res) => {
             return res.status(400).json({ error: "This date is already booked for this studio." });
         }
 
-        // ✅ Verify payment signature
         const generated_signature = crypto
             .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
             .update(razorpay_order_id + "|" + razorpay_payment_id)
@@ -105,7 +96,6 @@ router.post("/verify-payment", async (req, res) => {
             return res.status(400).json({ error: "Invalid payment signature" });
         }
 
-        // ✅ Save payment in DB
         const newPayment = new Payment({
             listingId,
             userId,
@@ -133,6 +123,8 @@ router.post("/verify-payment", async (req, res) => {
         return res.status(500).json({ error: `Payment verification failed: ${error?.message || "Unknown error"}` });
     }
 });
+
+
 
 router.get("/user-bookings/:userId", async (req, res) => {
     try {
