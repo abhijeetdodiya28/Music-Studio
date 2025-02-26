@@ -114,7 +114,7 @@ router.post("/verify-payment", async (req, res) => {
                 error: "This date is already booked. Please select a different date."
             });
         }
-
+        console.log(error);
         return res.status(500).json({
             error: "Payment verification failed. Please try again."
         });
