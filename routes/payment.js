@@ -4,6 +4,8 @@ const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const Payment = require("../models/payment");
 const Listing = require("../models/listings");
+// const deleteExpiredBookings = require("../models/bookingcleanup"); // Import the cleanup function
+
 require("dotenv").config();
 
 const razorpay = new Razorpay({
@@ -16,27 +18,20 @@ router.post("/create-order", async (req, res) => {
         const { listingId, userId, bookingDate } = req.body;
 
         if (!listingId || !userId || !bookingDate) {
-            return res.status(400).json({ error: "Missing required details." });
+            return res.json({ error: "Missing required details." });
         }
 
-        // Check if listing exists
-        const listing = await Listing.findById(listingId).exec();
+        const listing = await Listing.findById(listingId);
         if (!listing) {
-            return res.status(404).json({ error: "Listing not found." });
+            return res.json({ error: "Listing not found." });
         }
 
-        if (!listing.price) {
-            return res.status(400).json({ error: "Listing price is missing." });
-        }
-
-        // Check if a payment already exists for this listing and date
-        const existingPayment = await Payment.findOne({ listingId, bookingDate, userId }).exec();
+        const existingPayment = await Payment.findOne({ listingId, bookingDate });
         if (existingPayment) {
-            return res.status(400).json({ error: "This studio is already booked for the selected date. Please choose another date." });
+            return res.json({ error: "This studio is already booked for the selected date. Please choose another date." });
         }
 
         const amount = listing.price * 100; // Convert to paise
-        console.log(`Creating order: Amount - ${amount}, Listing ID - ${listingId}`);
 
         const options = {
             amount: amount,
@@ -46,14 +41,12 @@ router.post("/create-order", async (req, res) => {
         };
 
         const order = await razorpay.orders.create(options);
-        return res.status(200).json(order);
+        return res.json(order);
     } catch (error) {
         console.error("Order Creation Error:", error);
-        return res.status(500).json({ error: "Something went wrong. Please try again." });
+        return res.json({ error: "Something went wrong. Please try again." });
     }
 });
-
-
 
 router.post("/verify-payment", async (req, res) => {
     try {

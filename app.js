@@ -57,22 +57,22 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 
 // Enable CORS before authentication and session middleware
-// app.use(cors({ origin: ["https://music-studio-751p.onrender.com"], credentials: true }));
+app.use(cors({ origin: ["https://music-studio-751p.onrender.com"], credentials: true }));
 
 // session storage 
-// const store = MongoStore.create(
-//     {
-//         mongoUrl: dburl,
-//         crypto: {
-//             secret: "mysupersecretcode"
-//         },
-//         touchAfter: 24 * 3600,
-//     }
-// )
+const store = MongoStore.create(
+    {
+        mongoUrl: dirlink,
+        crypto: {
+            secret: "mysupersecretcode"
+        },
+        touchAfter: 24 * 3600,
+    }
+)
 
-// store.on("error", () => {
-//     console.log("Error in session store", err);
-// })
+store.on("error", () => {
+    console.log("Error in session store", err);
+})
 
 // //session
 const sessionOption = {
@@ -107,7 +107,7 @@ passport.deserializeUser(User.deserializeUser());
 // auto booking delete
 // Run the cleanup job every day at midnight (00:00)
 cron.schedule("0 0 * * *", async () => {
-    console.log("⏳ Running expired booking cleanup...");
+    console.log("Running expired booking cleanup...");
     await deleteExpiredBookings();
 });
 
