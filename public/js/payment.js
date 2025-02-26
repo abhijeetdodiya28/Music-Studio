@@ -7,12 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const listingId = paymentButton.getAttribute("data-listing-id");
             const userId = paymentButton.getAttribute("data-user-id");
-            const bookingDate = document.getElementById("bookingDate")?.value || "";
+            const bookingDate = document.getElementById("bookingDate").value;
 
-            console.log("✅ Button Clicked!");
-            console.log("🔍 Listing ID:", listingId);
-            console.log("🔍 User ID:", userId);
-            console.log("🔍 Booking Date:", bookingDate);
+
 
             if (!bookingDate) {
                 alert("Please select a booking date before proceeding.");
@@ -22,15 +19,13 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
                 alert("Redirecting to payment gateway... Please do not refresh the page.");
 
-                const response = await fetch("https://music-studio-yuyo.onrender.com/payment/create-order", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ listingId, userId, bookingDate })
+                const response = await fetch("https://music-studio-yuyo.onrender.com/payment/create-order", { // send post request to the backend...
+                    method: "POST",//for request 
+                    headers: { "Content-Type": "application/json" },//convert in object 
+                    body: JSON.stringify({ listingId, userId, bookingDate })//send data to the body 
                 });
 
                 const order = await response.json();
-                console.log("🛒 Order Response:", order);
-
                 if (order.error) {
                     document.getElementById("error-message").innerText = order.error;
                     document.getElementById("error-message").style.display = "block";
@@ -39,16 +34,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const options = {
                     key: "rzp_test_6BEHReutgiWrJP",
-                    amount: order.amount * 100, // Convert to paise
+                    amount: order.amount,
                     currency: "INR",
                     name: "Music Studio",
                     description: "Payment for booking",
-                    order_id: order.order_id, // Corrected order ID
+                    order_id: order.id,
                     handler: async function (response) {
-                        console.log("💳 Payment Successful!", response);
-
                         try {
-                            const verifyResponse = await fetch("https://music-studio-yuyo.onrender.com/payment/verify-payment", {
+                            const bookingDate = document.getElementById('bookingDate').value;
+                            if (!bookingDate) {
+                                alert('Please select a booking date');
+                                return;
+                            }
+
+                            const verifyResponse = await fetch("/payment/verify-payment", {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({
@@ -63,7 +62,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             });
 
                             const result = await verifyResponse.json();
-                            console.log("✅ Payment Verification Response:", result);
 
                             if (result.success) {
                                 alert(result.message);
@@ -72,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 alert(result.error || "Payment verification failed");
                             }
                         } catch (error) {
-                            console.error("❌ Payment Verification Error:", error);
+                            console.error("Verification Error:", error);
                             alert("Payment verification failed. Please try again.");
                         }
                     },
@@ -83,15 +81,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     theme: { color: "#3399cc" }
                 };
 
-                console.log("🚀 Initializing Razorpay...");
                 const rzp1 = new Razorpay(options);
                 rzp1.open();
             } catch (error) {
-                console.error("❌ Payment Error:", error);
+                console.error("Payment Error:", error);
                 alert("Something went wrong. Please try again.");
             }
         });
-    } else {
-        console.error("❌ Payment button not found in DOM!");
     }
 });

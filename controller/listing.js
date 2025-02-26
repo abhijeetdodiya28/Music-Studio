@@ -117,13 +117,13 @@ module.exports.cancelbooking = async (req, res) => {
 module.exports.showStudio = async (req, res) => {
     let { id } = req.params;
 
-    // Check if ID is valid
+
+    // Check if ID is a valid MongoDB ObjectId
     if (!mongoose.Types.ObjectId.isValid(id)) {
         console.log("Invalid ID:", id);
         req.flash("error", "Invalid Listing ID!");
         return res.redirect("/listings");
     }
-
     const listing = await Listing.findById(id)
         .populate({
             path: "review",
@@ -136,13 +136,7 @@ module.exports.showStudio = async (req, res) => {
         return res.redirect("/listings");
     }
 
-    console.log("User in showStudio:", req.user); // Debugging step
-
-    res.render("listings/show", {
-        listing,
-        mapToken: process.env.MAP_TOKEN,
-        user: req.user || null // Ensure user is defined
-    });
+    res.render("listings/show", { listing, mapToken: process.env.MAP_TOKEN });
 };
 
 
