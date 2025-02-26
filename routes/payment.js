@@ -24,31 +24,35 @@ router.post("/create-order", async (req, res) => {
             return res.status(400).json({ error: "Missing required details." });
         }
 
+        console.log("🔍 Fetching listing details...");
         const listing = await Listing.findById(listingId);
+        console.log("✅ Listing fetched:", listing);
+
         if (!listing) {
             console.log("❌ Listing not found.");
             return res.status(404).json({ error: "Listing not found." });
         }
 
-        // ✅ Convert amount to paise (Razorpay expects paise)
+        // Convert amount to paise (Razorpay requires paise)
         const amount = listing.price * 100;
         console.log("💰 Amount to be paid (in paise):", amount);
 
-        // ✅ Create order in Razorpay
+        // Create order in Razorpay
         const options = {
             amount,
             currency: "INR",
             receipt: `receipt_${Date.now()}`,
-            payment_capture: 1, // Auto capture payment
+            payment_capture: 1,
         };
 
+        console.log("🚀 Creating order with Razorpay...");
         const order = await razorpay.orders.create(options);
         console.log("🛒 Order created successfully:", order);
 
         res.json({
             success: true,
             order_id: order.id,
-            amount: order.amount / 100, // Convert back to rupees for frontend
+            amount: order.amount / 100,
             currency: order.currency,
             listingId,
             userId,
@@ -60,6 +64,7 @@ router.post("/create-order", async (req, res) => {
         return res.status(500).json({ error: `Something went wrong: ${error?.message || "Unknown error"}` });
     }
 });
+
 
 // ✅ **Verify Payment with Debugging**
 router.post("/verify-payment", async (req, res) => {
