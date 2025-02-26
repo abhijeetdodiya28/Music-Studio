@@ -24,26 +24,23 @@ router.post("/create-order", async (req, res) => {
 
         console.log("🔍 Fetching listing details...");
         const listing = await Listing.findById(listingId);
-        console.log("✅ Listing fetched:", listing);
 
         if (!listing) {
             console.log("❌ Listing not found.");
             return res.status(404).json({ error: "Listing not found." });
         }
 
-        const amount = listing.price * 100; // Convert amount to paise
-        console.log("💰 Amount to be paid (in paise):", amount);
+        const amount = listing.price * 100; // Convert to paise
+        console.log("💰 Amount:", amount);
 
-        const options = {
+        const order = await razorpay.orders.create({
             amount,
             currency: "INR",
             receipt: `receipt_${Date.now()}`,
             payment_capture: 1,
-        };
+        });
 
-        console.log("🚀 Creating order with Razorpay...");
-        const order = await razorpay.orders.create(options);
-        console.log("🛒 Order created successfully:", order);
+        console.log("🛒 Order Created:", order);
 
         res.json({
             success: true,
@@ -57,9 +54,10 @@ router.post("/create-order", async (req, res) => {
 
     } catch (error) {
         console.error("❌ Order Creation Error:", error);
-        return res.status(500).json({ error: `Something went wrong: ${error.message || "Unknown error"}` });
+        return res.status(500).json({ error: `Something went wrong: ${error.message}` });
     }
 });
+
 
 router.post("/verify-payment", async (req, res) => {
     try {

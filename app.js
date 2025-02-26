@@ -91,7 +91,6 @@ const sessionOption = {
 
 
 //middleware for listing
-app.use(cors({ origin: "*" }));
 
 app.use(session(sessionOption));
 app.use(flash());
@@ -137,7 +136,6 @@ app.use("/listings/:id/reviews", reviewRoute);
 app.use("/", userRoute);
 app.use("/", authRoute);
 app.use("/payment", paymentRoutes);
-app.use(paymentRoutes);
 
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found"));

@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const bookingDate = document.getElementById("bookingDate").value;
 
 
+            console.log("Listing ID:", listingId);
+            console.log("User ID:", userId);
+            console.log("Booking Date:", bookingDate);
+
 
             if (!bookingDate) {
                 alert("Please select a booking date before proceeding.");
@@ -46,20 +50,46 @@ document.addEventListener("DOMContentLoaded", function () {
                                 alert('Please select a booking date');
                                 return;
                             }
+                            const options = {
+                                key: "rzp_test_6BEHReutgiWrJP",
+                                amount: order.amount,
+                                currency: "INR",
+                                name: "Music Studio",
+                                description: "Payment for booking",
+                                order_id: order.order_id, // Fixed: Use `order.order_id` instead of `order.id`
+                                handler: async function (response) {
+                                    console.log("🛒 Razorpay Response:", response);
+                                    try {
+                                        const verifyResponse = await fetch("https://music-studio-yuyo.onrender.com/payment/verify-payment", {
+                                            method: "POST",
+                                            headers: { "Content-Type": "application/json" },
+                                            body: JSON.stringify({
+                                                razorpay_order_id: response.razorpay_order_id,
+                                                razorpay_payment_id: response.razorpay_payment_id,
+                                                razorpay_signature: response.razorpay_signature,
+                                                listingId,
+                                                userId,
+                                                bookingDate,
+                                                amount: order.amount
+                                            })
+                                        });
 
-                            const verifyResponse = await fetch("https://music-studio-yuyo.onrender.com/payment/verify-payment", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({
-                                    razorpay_order_id: response.razorpay_order_id,
-                                    razorpay_payment_id: response.razorpay_payment_id,
-                                    razorpay_signature: response.razorpay_signature,
-                                    listingId,
-                                    userId,
-                                    bookingDate,
-                                    amount: order.amount
-                                })
-                            });
+                                        const result = await verifyResponse.json();
+                                        console.log("✅ Payment Verification Response:", result);
+
+                                        if (result.success) {
+                                            alert(result.message);
+                                            window.location.href = `/user-bookings/${userId}`;
+                                        } else {
+                                            alert(result.error || "Payment verification failed");
+                                        }
+                                    } catch (error) {
+                                        console.error("Verification Error:", error);
+                                        alert("Payment verification failed. Please try again.");
+                                    }
+                                }
+                            };
+
 
                             const result = await verifyResponse.json();
 
