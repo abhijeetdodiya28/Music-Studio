@@ -9,8 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const userId = paymentButton.getAttribute("data-user-id");
             const bookingDate = document.getElementById("bookingDate").value;
 
-
-
             if (!bookingDate) {
                 alert("Please select a booking date before proceeding.");
                 return;
@@ -19,10 +17,11 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
                 alert("Redirecting to payment gateway... Please do not refresh the page.");
 
-                const response = await fetch("https://music-studio-yuyo.onrender.com/payment/create-order", { // send post request to the backend...
-                    method: "POST",//for request 
-                    headers: { "Content-Type": "application/json" },//convert in object 
-                    body: JSON.stringify({ listingId, userId, bookingDate })//send data to the body 
+                // Create Order
+                const response = await fetch("/payment/create-order", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ listingId, userId, bookingDate })
                 });
 
                 const order = await response.json();
@@ -33,19 +32,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 const options = {
-                    key: "rzp_test_6BEHReutgiWrJP",
-                    amount: order.amount,
+                    key: "rzp_test_bjjX6XSeJCfsmU",
+                    amount: order.amount * 100, // Convert back to paise
                     currency: "INR",
                     name: "Music Studio",
                     description: "Payment for booking",
-                    order_id: order.id,
+                    order_id: order.order_id, // FIXED: Correct order_id reference
                     handler: async function (response) {
                         try {
-                            const bookingDate = document.getElementById('bookingDate').value;
-                            if (!bookingDate) {
-                                alert('Please select a booking date');
-                                return;
-                            }
+                            console.log("Payment Success Response:", response);
 
                             const verifyResponse = await fetch("/payment/verify-payment", {
                                 method: "POST",
@@ -62,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             });
 
                             const result = await verifyResponse.json();
+                            console.log("Verification Result:", result);
 
                             if (result.success) {
                                 alert(result.message);
