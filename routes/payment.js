@@ -39,8 +39,8 @@ router.post("/create-order", async (req, res) => {
         console.log("Creating order with Razorpay...");
         const order = await razorpay.orders.create(options);
 
-        // ✅ Store the order in your database
-        const newOrder = new Order({
+        // Store the order in database
+        const newOrder = new order({
             razorpay_order_id: order.id,
             listingId,
             userId,
@@ -83,13 +83,13 @@ router.post("/verify-payment", async (req, res) => {
 
         console.log("Verifying payment...", req.body);
 
-        // ✅ Check if the order exists in the database
+        // Check if the order exists in the database
         const existingOrder = await Order.findOne({ razorpay_order_id });
         if (!existingOrder) {
             return res.status(400).json({ error: "Order ID does not exist." });
         }
 
-        // ✅ Check if date is already booked
+        //  Check if date is already booked
         const existingBooking = await Payment.findOne({
             listingId,
             bookingDate: new Date(bookingDate),
@@ -100,7 +100,7 @@ router.post("/verify-payment", async (req, res) => {
             return res.status(400).json({ error: "This date is already booked for this studio." });
         }
 
-        // ✅ Verify Razorpay Signature
+        //  Verify Razorpay Signature
         const generated_signature = crypto
             .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
             .update(razorpay_order_id + "|" + razorpay_payment_id)
@@ -110,7 +110,7 @@ router.post("/verify-payment", async (req, res) => {
             return res.status(400).json({ error: "Invalid payment signature" });
         }
 
-        // ✅ Save Payment
+        // Save Payment
         const newPayment = new Payment({
             listingId,
             userId,
@@ -123,7 +123,7 @@ router.post("/verify-payment", async (req, res) => {
 
         await newPayment.save();
 
-        // ✅ Update order status
+        //  Update order status
         await Order.findOneAndUpdate(
             { razorpay_order_id },
             { status: "Completed" }
