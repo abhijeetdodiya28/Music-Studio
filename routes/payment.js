@@ -39,8 +39,8 @@ router.post("/create-order", async (req, res) => {
         console.log("Creating order with Razorpay...");
         const order = await razorpay.orders.create(options);
 
-        // Store the order in database
-        const newOrder = new order({
+        // ✅ Corrected: Use the Order model
+        const newOrder = new Order({
             razorpay_order_id: order.id,
             listingId,
             userId,
