@@ -39,8 +39,8 @@ router.post("/create-order", async (req, res) => {
         console.log("Creating order with Razorpay...");
         const order = await razorpay.orders.create(options);
 
-        // ✅ Corrected: Use the Order model
-        const newOrder = new Order({
+        // Store in Payment
+        const newPayment = new Payment({
             razorpay_order_id: order.id,
             listingId,
             userId,
@@ -49,8 +49,8 @@ router.post("/create-order", async (req, res) => {
             status: "Pending"
         });
 
-        await newOrder.save();
-        console.log("Order saved to DB:", newOrder);
+        await newPayment.save();
+        console.log("Order saved to DB:", newPayment);
 
         res.json({
             success: true,
@@ -83,13 +83,13 @@ router.post("/verify-payment", async (req, res) => {
 
         console.log("Verifying payment...", req.body);
 
-        // Check if the order exists in the database
-        const existingOrder = await Order.findOne({ razorpay_order_id });
-        if (!existingOrder) {
+        //  Check in Payment model instead of Order
+        const existingPayment = await Payment.findOne({ razorpay_order_id });
+        if (!existingPayment) {
             return res.status(400).json({ error: "Order ID does not exist." });
         }
 
-        //  Check if date is already booked
+        // Check if date is already booked
         const existingBooking = await Payment.findOne({
             listingId,
             bookingDate: new Date(bookingDate),
@@ -100,7 +100,7 @@ router.post("/verify-payment", async (req, res) => {
             return res.status(400).json({ error: "This date is already booked for this studio." });
         }
 
-        //  Verify Razorpay Signature
+        // Verify Razorpay Signature
         const generated_signature = crypto
             .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
             .update(razorpay_order_id + "|" + razorpay_payment_id)
@@ -110,21 +110,8 @@ router.post("/verify-payment", async (req, res) => {
             return res.status(400).json({ error: "Invalid payment signature" });
         }
 
-        // Save Payment
-        const newPayment = new Payment({
-            listingId,
-            userId,
-            bookingDate: new Date(bookingDate),
-            razorpay_order_id,
-            razorpay_payment_id,
-            amount,
-            status: "Completed",
-        });
-
-        await newPayment.save();
-
-        //  Update order status
-        await Order.findOneAndUpdate(
+        // Update payment status instead of Order
+        await Payment.findOneAndUpdate(
             { razorpay_order_id },
             { status: "Completed" }
         );
@@ -134,16 +121,13 @@ router.post("/verify-payment", async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Payment successful! Your studio is booked.",
-            payment: {
-                id: newPayment._id,
-                bookingDate: newPayment.bookingDate,
-            },
         });
     } catch (error) {
         console.error("Payment Verification Error:", error);
         return res.status(500).json({ error: `Payment verification failed: ${error.message || "Unknown error"}` });
     }
 });
+
 
 
 
