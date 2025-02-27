@@ -39,14 +39,14 @@ router.post("/create-order", async (req, res) => {
         console.log("Creating order with Razorpay...");
         const order = await razorpay.orders.create(options);
 
-        // Store in Payment
+        // ✅ Store Payment without razorpay_payment_id initially
         const newPayment = new Payment({
             razorpay_order_id: order.id,
             listingId,
             userId,
             bookingDate: new Date(bookingDate),
             amount: order.amount / 100, // Store in rupees
-            status: "Pending"
+            status: "Created" // Change from "Pending" if not in enum
         });
 
         await newPayment.save();
@@ -68,6 +68,7 @@ router.post("/create-order", async (req, res) => {
 });
 
 
+
 // Verify Payment
 router.post("/verify-payment", async (req, res) => {
     try {
@@ -83,24 +84,13 @@ router.post("/verify-payment", async (req, res) => {
 
         console.log("Verifying payment...", req.body);
 
-        //  Check in Payment model instead of Order
+        // ✅ Find payment record using razorpay_order_id
         const existingPayment = await Payment.findOne({ razorpay_order_id });
         if (!existingPayment) {
             return res.status(400).json({ error: "Order ID does not exist." });
         }
 
-        // Check if date is already booked
-        const existingBooking = await Payment.findOne({
-            listingId,
-            bookingDate: new Date(bookingDate),
-            status: "Completed",
-        });
-
-        if (existingBooking) {
-            return res.status(400).json({ error: "This date is already booked for this studio." });
-        }
-
-        // Verify Razorpay Signature
+        // ✅ Verify Razorpay Signature
         const generated_signature = crypto
             .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
             .update(razorpay_order_id + "|" + razorpay_payment_id)
@@ -110,11 +100,10 @@ router.post("/verify-payment", async (req, res) => {
             return res.status(400).json({ error: "Invalid payment signature" });
         }
 
-        // Update payment status instead of Order
-        await Payment.findOneAndUpdate(
-            { razorpay_order_id },
-            { status: "Completed" }
-        );
+        // ✅ Update payment record with payment_id and mark as completed
+        existingPayment.razorpay_payment_id = razorpay_payment_id;
+        existingPayment.status = "Completed"; // Ensure this value is valid in the enum
+        await existingPayment.save();
 
         console.log("Payment verified and saved.");
 
@@ -127,6 +116,7 @@ router.post("/verify-payment", async (req, res) => {
         return res.status(500).json({ error: `Payment verification failed: ${error.message || "Unknown error"}` });
     }
 });
+
 
 
 
