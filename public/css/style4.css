@@ -437,3 +437,33 @@
     padding-bottom: 5px;
     font-family: 'Poppins', sans-serif;
 }
+
+/* index.html */
+
+:root {
+    --text-light: black;
+    --text-dark: linear-gradient(to right, orange, yellow);
+}
+
+.heading {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    transition: color 0.3s ease, background-clip 0.3s ease;
+}
+
+/* Light Mode */
+@media (prefers-color-scheme: light) {
+    .heading {
+        color: var(--text-light);
+    }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .heading {
+        background: var(--text-dark);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}

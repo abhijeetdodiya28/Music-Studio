@@ -26,6 +26,13 @@ router.post("/create-order", async (req, res) => {
             return res.status(404).json({ error: "Listing not found." });
         }
 
+        // Check if the listing is already booked on this date
+        const existingBooking = await Payment.findOne({ listingId, bookingDate: new Date(bookingDate) });
+
+        if (existingBooking) {
+            return res.status(400).json({ error: "This date is already booked. Please select a different date." });
+        }
+
         const amount = listing.price * 100; // Convert to paise
         console.log("Amount to be paid (in paise):", amount);
 
@@ -66,6 +73,7 @@ router.post("/create-order", async (req, res) => {
         res.status(500).json({ error: `Something went wrong: ${error.message || "Unknown error"}` });
     }
 });
+
 
 
 
