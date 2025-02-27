@@ -22,15 +22,17 @@ const paymentSchema = new mongoose.Schema({
     },
     razorpay_payment_id: {
         type: String,
-        required: true,
-        unique: true
+        unique: true // ✅ Made optional initially
     },
     amount: {
         type: Number,
         required: true
     },
-    status: { type: String, enum: ["Completed", "Cancelled"], default: "Completed" }
-
+    status: {
+        type: String,
+        enum: ["Created", "Completed", "Cancelled"], // Added "Created"
+        default: "Created" // Default should be "Created" when order is generated
+    }
 }, {
     timestamps: true
 });
