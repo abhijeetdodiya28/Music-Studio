@@ -1,3 +1,4 @@
+const { required } = require('joi');
 const mongoose = require('mongoose');
 
 const paymentSchema = new mongoose.Schema({
@@ -18,7 +19,6 @@ const paymentSchema = new mongoose.Schema({
     razorpay_order_id: {
         type: String,
         required: true,
-        unique: true
     },
     razorpay_payment_id: {
         type: String,
