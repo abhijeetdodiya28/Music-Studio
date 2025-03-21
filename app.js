@@ -27,13 +27,11 @@ const authRoute = require("./controller/auth.js"); // Add Google Auth Routes
 //database connectivity
 
 const dirlink = process.env.ATLASTDB_URL;
-const MONGO_URL = "mongodb://127.0.0.1:27017/Musicstudio";
+// const MONGO_URL = "mongodb://127.0.0.1:27017/Musicstudio";
 
+mongoose.set('strictQuery', false);
 
-mongoose.connect(process.env.ATLASDB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+mongoose.connect(process.env.ATLASTDB_URL)
     .then(() => console.log("MongoDB Connected"))
     .catch(err => console.error("MongoDB Connection Error:", err));
 
