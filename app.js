@@ -30,15 +30,13 @@ const dirlink = process.env.ATLASTDB_URL;
 const MONGO_URL = "mongodb://127.0.0.1:27017/Musicstudio";
 
 
-main()
-    .then(() => {
-        console.log("Connected to MongoDb");
-    }).catch((err) => {
-        console.log("error connecting to mongodb");
-    })
-async function main() {
-    mongoose.connect(dirlink);
-}
+mongoose.connect(process.env.ATLASDB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+    .then(() => console.log("MongoDB Connected"))
+    .catch(err => console.error("MongoDB Connection Error:", err));
+
 
 //midlewares
 app.set("view engine", "ejs");
