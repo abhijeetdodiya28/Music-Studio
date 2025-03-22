@@ -33,11 +33,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const options = {
                     key: "rzp_test_bjjX6XSeJCfsmU",
-                    amount: order.amount * 100, // Convert back to paise
+                    amount: order.amount * 100,
                     currency: "INR",
                     name: "Music Studio",
                     description: "Payment for booking",
-                    order_id: order.order_id, // FIXED: Correct order_id reference
+                    order_id: order.order_id,
                     handler: async function (response) {
                         try {
                             console.log("Payment Success Response:", response);
