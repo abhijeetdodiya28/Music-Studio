@@ -32,9 +32,9 @@ const MONGO_URI = process.env.ATLASTDB_URL;
 mongoose.set('strictQuery', false);
 
 mongoose.connect(MONGO_URI)
-    .then(() => console.log(" MongoDB Connected Successfully"))
+    .then(() => console.log("MongoDB Connected Successfully"))
     .catch(err => {
-        console.error(" MongoDB Connection Error:", err);
+        console.error("MongoDB Connection Error:", err);
         process.exit(1); // Exit process if MongoDB connection fails
     });
 
@@ -103,7 +103,6 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// auto booking delete
 // Run the cleanup job every day at midnight (00:00)
 cron.schedule("0 0 * * *", async () => {
     console.log("Running expired booking cleanup...");
