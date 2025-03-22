@@ -30,14 +30,15 @@ const paymentSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["Created", "Completed", "Cancelled"], // Added "Created"
-        default: "Created" // Default should be "Created" when order is generated
+        enum: ["Created", "Completed", "Cancelled"],
+        default: "Created"
     }
 }, {
     timestamps: true
 });
 
-// Add compound index for preventing duplicate bookings
+await mongoose.connection.db.collection('payments').dropIndex("razorpay_payment_id_1");
+
 paymentSchema.index({ listingId: 1, bookingDate: 1 }, { unique: true });
 
 module.exports = mongoose.model('Payment', paymentSchema);
