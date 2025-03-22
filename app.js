@@ -64,7 +64,7 @@ app.use(cors({ origin: ["https://music-studio-751p.onrender.com"], credentials: 
 // session storage 
 const store = MongoStore.create(
     {
-        mongoUrl: dirlink,
+        mongoUrl: MONGO_URI,
         crypto: {
             secret: "mysupersecretcode"
         },
