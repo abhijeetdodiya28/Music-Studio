@@ -31,10 +31,7 @@ const MONGO_URI = process.env.ATLASTDB_URL;
 
 mongoose.set('strictQuery', false);
 
-mongoose.connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+mongoose.connect(MONGO_URI)
     .then(() => console.log(" MongoDB Connected Successfully"))
     .catch(err => {
         console.error(" MongoDB Connection Error:", err);
@@ -163,3 +160,5 @@ const PORT = process.env.PORT || 7000; // Read PORT from .env or use 7000 as def
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app;
