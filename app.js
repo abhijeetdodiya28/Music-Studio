@@ -26,14 +26,20 @@ const authRoute = require("./controller/auth.js"); // Add Google Auth Routes
 
 //database connectivity
 
-const dirlink = process.env.ATLASTDB_URL;
-// const MONGO_URL = "mongodb://127.0.0.1:27017/Musicstudio";
+// MongoDB Connection
+const MONGO_URI = process.env.ATLASTDB_URL;
 
 mongoose.set('strictQuery', false);
 
-mongoose.connect(process.env.ATLASTDB_URL)
-    .then(() => console.log("MongoDB Connected"))
-    .catch(err => console.error("MongoDB Connection Error:", err));
+mongoose.connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+    .then(() => console.log(" MongoDB Connected Successfully"))
+    .catch(err => {
+        console.error(" MongoDB Connection Error:", err);
+        process.exit(1); // Exit process if MongoDB connection fails
+    });
 
 
 //midlewares
@@ -72,16 +78,17 @@ store.on("error", () => {
 
 // //session
 const sessionOption = {
-    // store,
+    store, // Enable MongoDB session store
     secret: "mysupersecretcode",
     resave: false,
     saveUninitialized: true,
     cookie: {
         expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
         maxAge: 7 * 24 * 60 * 60 * 1000,
-        httpOnly: true, //Prevents XSS attacks
+        httpOnly: true,
     }
 };
+
 
 
 
