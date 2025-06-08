@@ -155,7 +155,7 @@ router.get("/auth/google/listings", (req, res, next) => {
 
         req.logIn(user, (err) => {
             if (err) return next(err);
-            req.flash("success", "Welcome to MouseStudio!");
+            req.flash("success", "Welcome to MusicStudio!");
             return res.redirect("/listings"); // Redirect to listings page
         });
     })(req, res, next);
@@ -171,7 +171,7 @@ router.get("/auth/facebook/listings", (req, res, next) => {
 
         req.logIn(user, (err) => {
             if (err) return next(err);
-            req.flash("success", "Welcome to MouseStudio!");
+            req.flash("success", "Welcome to MusicStudio!");
             return res.redirect("/listings"); // Redirect to listings page
         });
     })(req, res, next);

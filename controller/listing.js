@@ -42,7 +42,7 @@ module.exports.booking = async (req, res) => {
     try {
         let listing = await Listing.findById(id);
         if (!listing) {
-            req.flash("error", "Listing not found");
+            req.flash("error", "studio is not found");
             return res.redirect("/listings");
         }
         listing.booking.push(date);
@@ -189,7 +189,7 @@ module.exports.createStudio = async (req, res) => {
         res.redirect("/listings");
     } catch (error) {
         console.error("Error creating listing:", error);
-        req.flash("error", "Something went wrong while creating the listing!");
+        req.flash("error", "Something went wrong while creating the studio!");
         res.redirect("/listings/new");
     }
 };
@@ -222,7 +222,7 @@ module.exports.editStudio = async (req, res) => {
     const listing = await Listing.findById(id);
 
     if (!listing) {
-        req.flash("error", "Listing you requested for does not exist!");
+        req.flash("error", "Studio you requested for does not exist!");
         return res.redirect("/listings");
     }
 
